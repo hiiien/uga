@@ -169,7 +169,7 @@ export default function Page() {
 
               <Card className="bg-white/70 backdrop-blur-md border border-white/20 shadow-lg">
                 <CardHeader className="flex flex-row items-center justify-between">
-                  <CardContent className="w-full flex flex-col items-center justify-center">
+                  <CardContent className="w-full flex flex-col items-center justify-center border-none shadow-none">
                     <NutrientChart />
                   </CardContent>  
                 </CardHeader>

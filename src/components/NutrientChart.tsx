@@ -33,7 +33,7 @@ const chartConfig = {
 
 export default function Component() {
   return (
-    <Card className="w-full max-w-lg">
+    <Card className="w-full max-w-lg border-none shadow-none">
       <CardHeader>
         <CardTitle>Nutrient Deficiencies</CardTitle>
         <CardDescription>January - June 2024</CardDescription>
