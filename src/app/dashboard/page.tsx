@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Mic, Phone, Video, MoreHorizontal, Download, MoreVertical, Bell } from "lucide-react"
 import { Sidebar } from "./sidebar"
+import { Calendar } from "@/components/ui/calendar"
 
 export default function Page() {
   return (
@@ -258,41 +259,12 @@ export default function Page() {
           </div>
 
           <div className="col-span-4 space-y-6">
-            <Card className="bg-white/70 backdrop-blur-md border border-white/20 shadow-lg">
-              <CardHeader className="flex flex-row items-center justify-between">
+            <Card className="bg-white/70 backdrop-blur-md border border-white/20 shadow-lg flex flex-col align-items-center">
+              <CardHeader className="flex items-center justify-center">
                 <CardTitle className="text-lg">Tests & Results</CardTitle>
-                <Button
-                  variant="outline"
-                  className="bg-teal-500/80 backdrop-blur-sm text-white hover:bg-teal-600/80 transition-colors"
-                >
-                  Add Result
-                </Button>
               </CardHeader>
-              <CardContent className="space-y-4">
-                {[
-                  { name: "CT Scan brain.mp4", date: "27-Jan-2024" },
-                  { name: "Lab. Results", date: "08-Sep-2023" },
-                  { name: "Lab. Results", date: "12-Jun-2023" },
-                  { name: "Echo kidney, liver", date: "07-Feb-2023" },
-                ].map((result, i) => (
-                  <div
-                    key={i}
-                    className="flex items-center justify-between rounded-lg bg-white/50 backdrop-blur-sm border border-white/10 shadow-sm p-4"
-                  >
-                    <div className="grid gap-1">
-                      <div>{result.name}</div>
-                      <div className="text-sm text-gray-500">{result.date}</div>
-                    </div>
-                    <div className="flex gap-2">
-                      <Button size="icon" variant="ghost">
-                        <Download className="h-4 w-4" />
-                      </Button>
-                      <Button size="icon" variant="ghost">
-                        <MoreVertical className="h-4 w-4" />
-                      </Button>
-                    </div>
-                  </div>
-                ))}
+              <CardContent className="space-y-6 flex flex-col align-items-center">
+                <Calendar />
               </CardContent>
             </Card>
 
