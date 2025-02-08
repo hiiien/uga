@@ -10,6 +10,7 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart"
+import { useEffect, useState } from "react"
 
 const chartData = [
   { month: "January", recommended: 186, current: 80 },
@@ -32,6 +33,9 @@ const chartConfig = {
 } satisfies ChartConfig
 
 export default function Component() {
+
+
+  use
   return (
     <Card className="w-full max-w-lg border-none shadow-none">
       <CardHeader>
