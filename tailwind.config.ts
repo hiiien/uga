@@ -20,14 +20,8 @@ export default {
   				DEFAULT: 'hsl(var(--popover))',
   				foreground: 'hsl(var(--popover-foreground))'
   			},
-  			primary: {
-  				DEFAULT: 'hsl(var(--primary))',
-  				foreground: 'hsl(var(--primary-foreground))'
-  			},
-  			secondary: {
-  				DEFAULT: 'hsl(var(--secondary))',
-  				foreground: 'hsl(var(--secondary-foreground))'
-  			},
+  			primary: 'hsl(var(--primary))',
+  			secondary: 'hsl(var(--secondary))',
   			muted: {
   				DEFAULT: 'hsl(var(--muted))',
   				foreground: 'hsl(var(--muted-foreground))'
@@ -49,7 +43,18 @@ export default {
   				'3': 'hsl(var(--chart-3))',
   				'4': 'hsl(var(--chart-4))',
   				'5': 'hsl(var(--chart-5))'
-  			}
+  			},
+  			custom: {
+  				100: 'hsl(120, 55.43%, 42.92%)',
+  				200: 'hsl(0, 73.90%, 52.00%)',
+  				300: 'hsl(var(--chart-3))',
+  				400: '#9e5cff',
+  				500: '#822eff',
+  				600: '#6a22e6',
+  				700: '#5318cc',
+  				800: '#3b0ea3',
+  				900: '#25097a',
+  			},
   		},
   		borderRadius: {
   			lg: 'var(--radius)',

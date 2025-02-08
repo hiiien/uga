@@ -1,13 +1,40 @@
+"use client"
+import dynamic from "next/dynamic"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Mic, Phone, Video, MoreHorizontal, Download, MoreVertical, Bell } from "lucide-react"
 import { Sidebar } from "./sidebar"
 import { Calendar } from "@/components/ui/calendar"
+import NutrientChart from "@/components/NutrientChart"
+
+// Dynamically import NoSSRChart with SSR disabled
+const NoSSRChart = dynamic(
+  () => import("../../components/ui/NoSSRChart"),
+  { ssr: false }
+)
 
 export default function Page() {
+  const recommendedData = [
+    { name: "Carbs", value: 50 },
+    { name: "Fats", value: 30 },
+    { name: "Protein", value: 20 },
+  ]
+  
+  // Random user data (for demonstration purposes)
+  const userData = [
+    { name: "Carbs", value: 40 },
+    { name: "Fats", value: 35 },
+    { name: "Protein", value: 25 },
+  ]
+  
+  const COLORS = {
+    Carbs: "hsl(0, 73.90%, 52.00%)",
+    Fats: "hsl(120, 55.43%, 42.92%)",
+    Protein: "hsl(var(--chart-3))",
+  }
+
   return (
     <div className="flex min-h-screen bg-gradient-to-br from-teal-100 via-white to-teal-100 text-gray-900">
       <Sidebar />
@@ -132,127 +159,19 @@ export default function Page() {
                 </Card>
                 <Card className="bg-white/70 backdrop-blur-md border border-white/20 shadow-lg">
                   <CardHeader>
-                    <CardTitle className="text-lg">Overall Condition</CardTitle>
+                    <CardTitle className="text-lg text-center">Nutrition Ratio</CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <div className="flex items-center gap-8">
-                      <div className="relative h-32 w-32">
-                        {/* Placeholder for circular chart */}
-                        <div className="absolute inset-0 rounded-full border-4 border-teal-500" />
-                      </div>
-                      <div className="grid gap-2">
-                        <div className="flex items-center gap-2">
-                          <div className="h-3 w-3 rounded-full bg-teal-500" />
-                          <span>Cardiology</span>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <div className="h-3 w-3 rounded-full bg-teal-400" />
-                          <span>Endocrine</span>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <div className="h-3 w-3 rounded-full bg-teal-300" />
-                          <span>Dermatology</span>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <div className="h-3 w-3 rounded-full bg-teal-200" />
-                          <span>Neurology</span>
-                        </div>
-                      </div>
-                    </div>
+                    <NoSSRChart recommendedData={recommendedData} userData={userData} COLORS={COLORS} />
                   </CardContent>
                 </Card>
               </div>
 
               <Card className="bg-white/70 backdrop-blur-md border border-white/20 shadow-lg">
                 <CardHeader className="flex flex-row items-center justify-between">
-                  <Tabs defaultValue="upcoming" className="w-full">
-                    <div className="flex items-center justify-between">
-                      <TabsList className="bg-white/50 backdrop-blur-sm">
-                        <TabsTrigger value="upcoming" className="data-[state=active]:bg-white">
-                          Upcoming Appointments
-                        </TabsTrigger>
-                        <TabsTrigger value="past" className="data-[state=active]:bg-white">
-                          Past Appointments
-                        </TabsTrigger>
-                      </TabsList>
-                      <Button
-                        variant="default"
-                        className="bg-teal-500/80 backdrop-blur-sm text-white hover:bg-teal-600/80 transition-colors"
-                      >
-                        New Appointment
-                      </Button>
-                    </div>
-                    <TabsContent value="upcoming">
-                      <div className="space-y-4">
-                        <div className="text-sm text-teal-600">JUN</div>
-                        <div className="rounded-lg bg-white/50 backdrop-blur-sm border border-white/10 shadow-sm p-4">
-                          <div className="flex items-center justify-between">
-                            <div className="grid gap-1">
-                              <div className="text-sm">June 26, 09:45</div>
-                              <div className="text-sm text-gray-500">In person</div>
-                            </div>
-                            <div className="grid gap-1">
-                              <div>Earache, fever</div>
-                              <div className="text-sm text-gray-500">Dr. V. Jong</div>
-                            </div>
-                            <div className="flex items-center gap-2">
-                              <span className="rounded-full bg-teal-100/70 backdrop-blur-sm px-3 py-1 text-sm text-teal-600">
-                                Confirmed
-                              </span>
-                              <Button size="icon" variant="ghost">
-                                <MoreVertical className="h-4 w-4" />
-                              </Button>
-                            </div>
-                          </div>
-                        </div>
-                        <div className="rounded-lg bg-white/50 backdrop-blur-sm border border-white/10 shadow-sm p-4">
-                          <div className="flex items-center justify-between">
-                            <div className="grid gap-1">
-                              <div className="text-sm">June 26, 11:00</div>
-                              <div className="text-sm text-gray-500">In person</div>
-                            </div>
-                            <div className="grid gap-1">
-                              <div>Vaccine admin.</div>
-                              <div className="text-sm text-gray-500">Assistant</div>
-                            </div>
-                            <div className="flex items-center gap-2">
-                              <span className="rounded-full bg-teal-100/70 backdrop-blur-sm px-3 py-1 text-sm text-teal-600">
-                                Confirmed
-                              </span>
-                              <Button size="icon" variant="ghost">
-                                <MoreVertical className="h-4 w-4" />
-                              </Button>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </TabsContent>
-                    <TabsContent value="past">
-                      <div className="space-y-4">
-                        <div className="text-sm text-teal-600">JUL</div>
-                        <div className="rounded-lg bg-white/50 backdrop-blur-sm border border-white/10 shadow-sm p-4">
-                          <div className="flex items-center justify-between">
-                            <div className="grid gap-1">
-                              <div className="text-sm">July 07, 16:00</div>
-                              <div className="text-sm text-gray-500">Telephone</div>
-                            </div>
-                            <div className="grid gap-1">
-                              <div>Migraine, vo...</div>
-                              <div className="text-sm text-gray-500">Dr. J.Wask</div>
-                            </div>
-                            <div className="flex items-center gap-2">
-                              <span className="rounded-full bg-gray-100/70 backdrop-blur-sm px-3 py-1 text-sm text-gray-500">
-                                Pending...
-                              </span>
-                              <Button size="icon" variant="ghost">
-                                <MoreVertical className="h-4 w-4" />
-                              </Button>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </TabsContent>
-                  </Tabs>
+                  <CardContent className="w-full flex flex-col items-center justify-center border-none shadow-none">
+                    <NutrientChart />
+                  </CardContent>  
                 </CardHeader>
               </Card>
             </div>
@@ -271,7 +190,7 @@ export default function Page() {
 
             <Card className="bg-white/70 backdrop-blur-md border border-white/20 shadow-lg">
               <CardHeader className="flex flex-row items-center justify-between">
-                <CardTitle className="text-lg">Medical Records</CardTitle>
+                <CardTitle className="text-lg">Meal Records</CardTitle>
                 <Button
                   variant="outline"
                   className="bg-teal-500/80 backdrop-blur-sm text-white hover:bg-teal-600/80 transition-colors"
