@@ -6,11 +6,22 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Sidebar } from "../sidebar"
+import { useEffect } from "react"
 
 export default function ScheduleCall() {
   const [name, setName] = useState("")
   const [phoneNumbers, setPhoneNumbers] = useState([""])
-  const [trigger_time, setTimestamp] = useState("")
+  const [trigger_time, setTimestamp] = useState(() => {
+    if (typeof window === "undefined") return ""; // Ensure SSR doesn't mismatch
+    const now = new Date();
+    now.setMinutes(now.getMinutes() + 5);
+    return now.toISOString().slice(0, 16);
+  });
+
+  useEffect(() => {
+    console.log("Initial Trigger Time (Client):", trigger_time);
+  }, []);
+  
 
   const addPhoneNumber = () => {
     setPhoneNumbers([...phoneNumbers, ""])
@@ -28,26 +39,39 @@ export default function ScheduleCall() {
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    // Handle form submission here
+    e.preventDefault();
     try {
-      const updatedNumbers = phoneNumbers.map((number) => "+1" + number)
-      setPhoneNumbers(updatedNumbers)
-      const response = await fetch("localhost:8080/schedule_call", {
+      const tasks = phoneNumbers.map((number) => ({
+        to_number: "+1" + number,
+      }));
+  
+      const dateObject = new Date(trigger_time);
+      const trigger_timestamp = dateObject.getTime(); // Keep as milliseconds ✅
+  
+      const now = Date.now();
+      if (trigger_timestamp <= now) {
+        alert("Please select a future time for the call.");
+        return;
+      }
+  
+      const requestBody = JSON.stringify({ name, tasks, trigger_timestamp });
+      console.log("Sending Request:", requestBody); // Debug log
+  
+      const response = await fetch("http://localhost:8080/schedule_call", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ name, updatedNumbers, trigger_time }),
+        body: requestBody,
       });
-      console.log("Response ", response)
+  
       const data = await response.json();
-      console.log("Data ", data)
+      console.log("Response Data:", data);
     } catch (error) {
       console.error("Error scheduling call:", error);
     }
-    console.log({ name, phoneNumbers, trigger_time })
-  }
+  };
+  
 
   return (
     <div className="flex min-h-screen bg-gradient-to-br from-teal-100 via-white to-teal-100 text-gray-900">
