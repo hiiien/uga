@@ -1,42 +1,3 @@
-// "use client"
-
-// import { useRouter } from "next/navigation"
-// import { useEffect, useState } from "react"
-// import { useParams } from "next/navigation"
-
-// export default function UserDashboard() {
-//   const { id } = useParams()  // Dynamically gets the user ID from the URL
-//   const [userData, setUserData] = useState<any>(null)
-//   const router = useRouter()
-
-//   useEffect(() => {
-//     // Fetch user data based on id or set some state
-//     async function fetchUserData() {
-//       // Replace with your actual API call or logic
-//       const response = await fetch(`/api/users/${id}`)
-//       if (response.ok) {
-//         const data = await response.json()
-//         setUserData(data)
-//       } else {
-//         // Handle error or redirect if user not found
-//         router.push("/dashboard")
-//       }
-//     }
-//     fetchUserData()
-//   }, [id, router])
-
-//   return (
-//     <div>
-//       <h1>User Dashboard for {id}</h1>
-//       {userData ? (
-//         <pre>{JSON.stringify(userData, null, 2)}</pre>
-//       ) : (
-//         <p>Loading user data...</p>
-//       )}
-//     </div>
-//   )
-// }
-
 "use client"
 import { useState, useEffect } from "react"
 import dynamic from "next/dynamic"
@@ -50,251 +11,64 @@ import Calendar from "@/components/ui/calendar"
 import NutrientChart from "@/components/NutrientChart"
 import { useRouter } from "next/navigation"
 import { useParams } from "next/navigation"
-import { set, setDate } from "date-fns"
 import { Skeleton } from "@/components/ui/skeleton"
 import { motion } from "framer-motion"
 
 // Dynamically import NoSSRChart with SSR disabled
 const NoSSRChart = dynamic(() => import("../../../components/ui/NoSSRChart"), { ssr: false })
 
-const mockRecords = {
-  "2_8_25": {
-    "Food Info": {
-      "Protein": 65.5,
-      "Fat": 55.2,
-      "Carbs": 220.3,
-      "Calories": 1650.5,
-      "Vitamin A": 800,
-      "Vitamin C": 65,
-      "Vitamin D": 15,
-      "Vitamin E": 12.5,
-      "Vitamin K": 85.2,
-      "Thiamin": 1.2,
-      "Riboflavin": 1.5,
-      "Niacin": 16.2,
-      "Vitamin B6": 1.8,
-      "Folate": 380.5,
-      "Vitamin B12": 2.5,
-      "Pantothenic Acid": 5.2,
-      "Choline": 425.3,
-      "Calcium": 950.4,
-      "Copper": 0.9,
-      "Fluoride": 3500.0,
-      "Iron": 15.2,
-      "Magnesium": 320.5,
-      "Manganese": 2.1,
-      "Phosphorus": 850.3,
-      "Selenium": 55.2,
-      "Zinc": 10.5,
-      "Potassium": 2850.5,
-      "Sodium": 2100.3
-    },
-    "Medications": false,
-    "Exercises": [
-      {
-        "Name": "walking",
-        "Calories Burned": 250.5
-      }
-    ]
-  },
-  "2_9_25": {
-    "Food Info": {
-      "Protein": 72.3,
-      "Fat": 62.1,
-      "Carbs": 245.5,
-      "Calories": 1820.4,
-      "Vitamin A": 850,
-      "Vitamin C": 75,
-      "Vitamin D": 18,
-      "Vitamin E": 13.2,
-      "Vitamin K": 90.5,
-      "Thiamin": 1.3,
-      "Riboflavin": 1.6,
-      "Niacin": 17.5,
-      "Vitamin B6": 1.9,
-      "Folate": 400.2,
-      "Vitamin B12": 2.8,
-      "Pantothenic Acid": 5.5,
-      "Choline": 450.2,
-      "Calcium": 1000.5,
-      "Copper": 1.0,
-      "Fluoride": 3600.0,
-      "Iron": 16.5,
-      "Magnesium": 340.2,
-      "Manganese": 2.3,
-      "Phosphorus": 900.5,
-      "Selenium": 58.5,
-      "Zinc": 11.2,
-      "Potassium": 3000.3,
-      "Sodium": 2250.5
-    },
-    "Medications": true,
-    "Exercises": [
-      {
-        "Name": "running",
-        "Calories Burned": 450.8
-      }
-    ]
-  },
-  "2_10_25": {
-    "Food Info": {
-      "Protein": 68.8,
-      "Fat": 58.5,
-      "Carbs": 232.4,
-      "Calories": 1735.2,
-      "Vitamin A": 825,
-      "Vitamin C": 70,
-      "Vitamin D": 16.5,
-      "Vitamin E": 12.8,
-      "Vitamin K": 87.8,
-      "Thiamin": 1.25,
-      "Riboflavin": 1.55,
-      "Niacin": 16.8,
-      "Vitamin B6": 1.85,
-      "Folate": 390.3,
-      "Vitamin B12": 2.65,
-      "Pantothenic Acid": 5.35,
-      "Choline": 437.8,
-      "Calcium": 975.2,
-      "Copper": 0.95,
-      "Fluoride": 3550.0,
-      "Iron": 15.8,
-      "Magnesium": 330.3,
-      "Manganese": 2.2,
-      "Phosphorus": 875.4,
-      "Selenium": 56.8,
-      "Zinc": 10.8,
-      "Potassium": 2925.4,
-      "Sodium": 2175.4
-    },
-    "Medications": true,
-    "Exercises": [
-      {
-        "Name": "cycling",
-        "Calories Burned": 350.6
-      }
-    ]
-  },
-  "2_11_25": {
-    "Food Info": {
-      "Protein": 64.2,
-      "Fat": 54.8,
-      "Carbs": 215.6,
-      "Calories": 1605.8,
-      "Vitamin A": 780,
-      "Vitamin C": 62,
-      "Vitamin D": 14.2,
-      "Vitamin E": 12.1,
-      "Vitamin K": 82.5,
-      "Thiamin": 1.15,
-      "Riboflavin": 1.45,
-      "Niacin": 15.8,
-      "Vitamin B6": 1.75,
-      "Folate": 370.4,
-      "Vitamin B12": 2.35,
-      "Pantothenic Acid": 5.05,
-      "Choline": 412.6,
-      "Calcium": 925.3,
-      "Copper": 0.85,
-      "Fluoride": 3450.0,
-      "Iron": 14.8,
-      "Magnesium": 310.4,
-      "Manganese": 2.0,
-      "Phosphorus": 825.2,
-      "Selenium": 53.5,
-      "Zinc": 10.2,
-      "Potassium": 2775.2,
-      "Sodium": 2025.6
-    },
-    "Medications": true,
-    "Exercises": [
-      {
-        "Name": "yoga",
-        "Calories Burned": 200.4
-      }
-    ]
-  },
-  "2_12_25": {
-    "Food Info": {
-      "Protein": 75.6,
-      "Fat": 65.3,
-      "Carbs": 258.7,
-      "Calories": 1925.8,
-      "Vitamin A": 875,
-      "Vitamin C": 80,
-      "Vitamin D": 19.5,
-      "Vitamin E": 13.8,
-      "Vitamin K": 93.2,
-      "Thiamin": 1.35,
-      "Riboflavin": 1.65,
-      "Niacin": 18.2,
-      "Vitamin B6": 1.95,
-      "Folate": 415.8,
-      "Vitamin B12": 2.95,
-      "Pantothenic Acid": 5.65,
-      "Choline": 462.5,
-      "Calcium": 1025.8,
-      "Copper": 1.05,
-      "Fluoride": 3650.0,
-      "Iron": 17.2,
-      "Magnesium": 350.5,
-      "Manganese": 2.4,
-      "Phosphorus": 925.8,
-      "Selenium": 60.2,
-      "Zinc": 11.5,
-      "Potassium": 3075.6,
-      "Sodium": 2325.8
-    },
-    "Medications": true,
-    "Exercises": [
-      {
-        "Name": "swimming",
-        "Calories Burned": 485.5
-      }
-    ]
-  }
-}
-
-const users = [
-  {
-    name: "Jay Roy",
-    age: 22,
-    sex: "male", 
-    height: 179,
-    weight: 160,
-    address: "905 2nd St",
-    phone_number: "2247707887",
-  },
-  {
-    name: "Henk Boerman",
-    age: 53,
-    sex: "male",
-    height: 175,
-    weight: 170,
-    address: "123 4th Ave",
-    phone_number: "4703300803",
-  },
-]
-
 export default function Page() {
-  const recommendedData = [
-    { name: "Carbs", value: 50 },
-    { name: "Fats", value: 30 },
-    { name: "Protein", value: 20 },
-  ]
-
   const { id } = useParams();
-  const router = useRouter()
-  
-  // Find user data based on id
-  const userData = users.find((user, index) => index.toString() === id);
+  console.log("User ID:", id);
 
-  // Calculate nutrition data from mockRecords
-  const nutritionData = Object.values(mockRecords).map(record => ({
-    Protein: record["Food Info"].Protein,
-    Fat: record["Food Info"].Fat,
-    Carbs: record["Food Info"].Carbs
-  }));
+  const [coreData, setCoreData] = useState<any>(null);
+  const [dateData, setDateData] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+  const router = useRouter();
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const coreQuery = `queries=id:${id}&queries=type:core`;
+        const dateQuery = `queries=id:${id}&queries=type:date`;
+        const coreUrl = `http://localhost:8080/filter_files?${coreQuery}`;
+        const dateUrl = `http://localhost:8080/filter_files?${dateQuery}`;
+
+        const [coreResponse, dateResponse] = await Promise.all([
+          fetch(coreUrl, { method: "GET" }),
+          fetch(dateUrl, { method: "GET" }),
+        ]);
+
+        if (!coreResponse.ok || !dateResponse.ok) {
+          throw new Error("Failed to fetch data");
+        }
+
+        const coreDataFetched = await coreResponse.json();
+        const dateDataFetched = await dateResponse.json();
+
+        console.log("Core Data:", coreDataFetched);
+        console.log("Date Data:", dateDataFetched);
+
+        setCoreData(coreDataFetched[0]); // Since coreData is an array with one object
+        setDateData(dateDataFetched);
+        setLoading(false);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+        setLoading(false);
+      }
+    }
+    fetchData();
+  }, [id]);
+
+  // Calculate nutrition data from dateData
+  const nutritionData = dateData.map(record => {
+    const date = Object.keys(record)[0];
+    return {
+      Protein: record[date]["Food Info"].Protein,
+      Fat: record[date]["Food Info"].Fat,
+      Carbs: record[date]["Food Info"].Carbs
+    };
+  });
 
   // Calculate average nutrition values
   const averageNutrition = nutritionData.reduce((acc, curr) => ({
@@ -309,18 +83,22 @@ export default function Page() {
     { name: "Protein", value: (averageNutrition.Protein / nutritionData.length) * 100 },
   ];
 
-  // Create medication log from mockRecords
-  const medicationLog = Object.entries(mockRecords).reduce<Record<string, boolean>>((acc, [date, record]) => {
-    acc[date] = record.Medications;
+  // Create medication log from dateData
+  const medicationLog = dateData.reduce<Record<string, boolean>>((acc, record) => {
+    const date = Object.keys(record)[0];
+    acc[date] = record[date].Medications;
     return acc;
   }, {});
 
-  // Create meal records from mockRecords
-  const mealRecords = Object.entries(mockRecords).map(([date, record]) => ({
-    date: date.replace(/_/g, "/"),
-    brief: `Calories: ${record["Food Info"].Calories}`,
-    specialist: `Exercise: ${record.Exercises[0].Name}`
-  }));
+  // Create meal records from dateData
+  const mealRecords = dateData.map(record => {
+    const date = Object.keys(record)[0];
+    return {
+      date: date.replace(/_/g, "/"),
+      brief: `Calories: ${record[date]["Food Info"].Calories}`,
+      specialist: `Exercise: ${record[date].Exercises[0].Name}`
+    };
+  });
 
   const COLORS = {
     Protein: "hsl(0, 77%, 84%)",
@@ -399,10 +177,10 @@ export default function Page() {
                       src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-P2vICEJIg813fYnqzfSBLL7xaRLH5t.png"
                       alt="Patient"
                     />
-                    <AvatarFallback>{userData?.name.split(' ').map(n => n[0]).join('')}</AvatarFallback>
+                    <AvatarFallback>{coreData?.name.split(' ').map((n: string) => n[0]).join('')}</AvatarFallback>
                   </Avatar>
                   <div>
-                    <h2 className="text-2xl font-semibold">{userData?.name}</h2>
+                    <h2 className="text-2xl font-semibold">{coreData?.name}</h2>
                     <p className="text-gray-500">Patient ID: {id}</p>
                   </div>
                 </div>
@@ -436,41 +214,22 @@ export default function Page() {
                       <CardTitle className="text-lg">General Info</CardTitle>
                     </CardHeader>
                     <CardContent>
-                      {userData ? (
-                        <div className="grid gap-4">
-                          <div className="grid grid-cols-2 gap-4">
-                            <div>
-                              <div className="text-sm text-gray-500">Age</div>
-                              <div>{userData.age} years</div>
-                            </div>
-                            <div>
-                              <div className="text-sm text-gray-500">Sex</div>
-                              <div>{userData.sex}</div>
-                            </div>
+                      <div className="grid gap-4">
+                        <div className="grid grid-cols-2 gap-4">
+                          <div>
+                            <div className="text-sm text-gray-500">Age</div>
+                            <div>{coreData?.age}</div>
                           </div>
                           <div>
-                            <div className="text-sm text-gray-500">Address</div>
-                            <div>{userData.address}</div>
-                          </div>
-                          <div className="grid grid-cols-2 gap-4">
-                            <div>
-                              <div className="text-sm text-gray-500">Height</div>
-                              <div>{userData.height} cm</div>
-                            </div>
-                            <div>
-                              <div className="text-sm text-gray-500">Weight</div>
-                              <div>{userData.weight} lbs</div>
-                            </div>
+                            <div className="text-sm text-gray-500">Weight</div>
+                            <div>{coreData?.weight} kg</div>
                           </div>
                         </div>
-                      ) : (
-                        <div className="space-y-4">
-                          <Skeleton className="h-4 w-full" />
-                          <Skeleton className="h-4 w-full" />
-                          <Skeleton className="h-4 w-full" />
-                          <Skeleton className="h-4 w-full" />
+                        <div>
+                          <div className="text-sm text-gray-500">Height</div>
+                          <div>{coreData?.height} cm</div>
                         </div>
-                      )}
+                      </div>
                     </CardContent>
                   </Card>
                 </motion.div>
@@ -484,8 +243,8 @@ export default function Page() {
                       <CardTitle className="text-lg text-center">Nutrition Ratio</CardTitle>
                     </CardHeader>
                     <CardContent>
-                      {data.length > 0 ? (
-                        <NoSSRChart recommendedData={recommendedData} userData={data} COLORS={COLORS} />
+                      {dateData.length > 0 ? (
+                        <NoSSRChart recommendedData={data} userData={data} COLORS={COLORS} />
                       ) : (
                         <div className="h-[200px] flex items-center justify-center">
                           <Skeleton className="h-full w-full rounded-full" />
@@ -504,7 +263,7 @@ export default function Page() {
                 <Card className="bg-white/70 backdrop-blur-md border border-white/20 shadow-lg">
                   <CardHeader className="flex flex-row items-center justify-between">
                     <CardContent className="w-full flex flex-col items-center justify-center border-none shadow-none">
-                      {data.length > 0 ? <NutrientChart /> : <Skeleton className="h-[300px] w-full" />}
+                      {dateData.length > 0 ? <NutrientChart /> : <Skeleton className="h-[300px] w-full" />}
                     </CardContent>
                   </CardHeader>
                 </Card>
@@ -535,7 +294,7 @@ export default function Page() {
             >
               <Card className="bg-white/70 backdrop-blur-md border border-white/20 shadow-lg">
                 <CardHeader className="flex flex-row items-center justify-between">
-                  <CardTitle className="text-lg">Meal Records</CardTitle>
+                  <CardTitle className="text-lg">Meal Records & Exercise Log</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   {mealRecords.length > 0 ? (
@@ -550,15 +309,7 @@ export default function Page() {
                         <div className="grid gap-1">
                           <div className="text-sm text-gray-500">{record.date}</div>
                           <div>{record.brief}</div>
-                          <div className="text-sm text-gray-500">{record.specialist}</div>
-                        </div>
-                        <div className="flex gap-2">
-                          <Button size="icon" variant="ghost">
-                            <Download className="h-4 w-4" />
-                          </Button>
-                          <Button size="icon" variant="ghost">
-                            <MoreVertical className="h-4 w-4" />
-                          </Button>
+                          <div>{record.specialist}</div>
                         </div>
                       </motion.div>
                     ))

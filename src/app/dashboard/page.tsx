@@ -20,17 +20,26 @@ const users = [
       height: 179,
       weight: 160,
       address: "905 2nd St",
-      phone_number: "2247707887",
+      phone_number: "2052391306",
     },
     {
-      name: "Henk Boerman",
-      age: 53,
+      name: "Gavin Ward",
+      age: 20,
       sex: "male",
       height: 175,
       weight: 170,
       address: "123 4th Ave",
       phone_number: "4703300803",
     },
+    {
+      name: "Brandon Kantorski",
+      age: 30,
+      sex: "male",
+      height: 180,
+      weight: 180,
+      address: "123 4th Ave",
+      phone_number: "2247707887",
+    }
   ]
 
 const TooltipButton = () => {
@@ -61,32 +70,33 @@ const TooltipButton = () => {
 export default function Page() {
   const [data, setData] = useState<any[]>([]);
   const router = useRouter();
-  useEffect(() => {
-    async function fetchData() {
-      try {
-        const response = await fetch('http://localhost:8080/get_user_info', {
-          method: 'GET',
-        });
+  // useEffect(() => {
+  //   async function fetchData() {
+  //     try {
+  //       const response = await fetch('http://localhost:8080/get_user_info', {
+  //         method: 'GET',
+  //       });
 
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
+  //       if (!response.ok) {
+  //         throw new Error('Network response was not ok');
+  //       }
 
-        const jsonData = await response.json();
-        console.log("Fetched JSON Data:", jsonData);
+  //       const jsonData = await response.json();
+  //       console.log("Fetched JSON Data:", jsonData);
 
-        // If the response structure is the array you provided, we directly set the data
-        setData(jsonData);
-      } catch (error) {
-        console.error('There was a problem with the fetch operation:', error);
-      }
-    }
+  //       // If the response structure is the array you provided, we directly set the data
+  //       setData(jsonData);
+  //     } catch (error) {
+  //       console.error('There was a problem with the fetch operation:', error);
+  //     }
+  //   }
 
-    fetchData();
-  }, []);
+  //   fetchData();
+  // }, []);
 
   return (
     <div className="flex min-h-screen bg-gradient-to-br from-teal-100 via-white to-teal-100 text-gray-900">
+      <Sidebar />
       <main className="flex-1 p-6">
         <header className="flex items-center justify-between mb-8">
           <div className="flex items-center gap-4">
@@ -140,7 +150,10 @@ export default function Page() {
             <Card
               key={user.name}
               user={user}
-              onClick={() => router.push(`/dashboard/${user.phone_number}`)}
+              onClick={() => {
+                // Pass user data through router state
+                router.push(`/dashboard/${user.phone_number}`)
+              }}
             />
           ))}
     </div>

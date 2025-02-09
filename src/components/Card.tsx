@@ -28,7 +28,7 @@ const Card: React.FC<CardProps> = ({ user, onClick }) => {
           {/* Header with Avatar and Name */}
           <div className="flex items-center gap-4">
             <Avatar className="h-16 w-16 ring-4 ring-white shadow-lg">
-              <AvatarImage src="https://placehold.co/50" alt={user.name} />
+              {/* <AvatarImage src="https://placehold.co/50" alt={user.name} /> */}
               <AvatarFallback className="text-lg bg-teal-100 text-teal-700">{user.name.charAt(0)}</AvatarFallback>
             </Avatar>
             <div className="space-y-1">
