@@ -35,12 +35,35 @@ const chartConfig = {
   },
 } satisfies ChartConfig
 
-
 // 
 // 
 // 
 // DOES NOT PASS ACTUAL DATA
 export default function Component() {
+  const queries = [
+    "type:core",
+    "id:123"
+  ];
+  
+  const queryString: string = queries
+    .map((query: string): string => `queries=${encodeURIComponent(query)}`)
+    .join('&');
+  
+  fetch("http://https//14b2-198-137-18-213.ngrok-free.app/filter_files?${queryString}", {
+    method: 'GET',
+  })
+  .then(response => {
+    if (!response.ok) {
+        throw new Error('Network response was not ok');
+    }
+    return response.json();
+  })
+  .then(data => {
+    console.log(data); // Handle the data received from the server
+  })
+  .catch(error => {
+    console.error('There was a problem with the fetch operation:', error);
+  });
   const [data, setData] = useState<any[]>([]);
   useEffect(() => {
     const nutrients = getNutrientRequirements("Infants", 0.5)
