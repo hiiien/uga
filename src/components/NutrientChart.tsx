@@ -41,17 +41,18 @@ export default function Component() {
   useEffect(() => {
     async function fetchData() {
       try {
-        const response = await fetch(`http://14b2-198-137-18-213.ngrok-free.app/get_all_users`, {
+        const response = await fetch(`http://localhost:8080/get_all_users`, {
           method: 'GET',
         });
-        console.log("Response:", response);
+  
+        console.log("Response:", response); // This logs the response metadata
   
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }
   
-        const jsonData = await response.json(); // Convert response to JSON
-        console.log("Fetched JSON Data:", jsonData);
+        const jsonData = await response.json(); // ✅ Parse response JSON
+        console.log("Fetched JSON Data:", jsonData); // Now it logs the actual data
   
         // Extracting the array from the object
         if (jsonData && Array.isArray(jsonData.users)) {
@@ -67,7 +68,6 @@ export default function Component() {
     fetchData();
   }, []);
   
-
   return (
     <Card className="w-full max-w-lg border-none shadow-none">
       <CardHeader>
