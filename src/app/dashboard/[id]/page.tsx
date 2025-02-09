@@ -436,16 +436,15 @@ export default function Page() {
                       <CardTitle className="text-lg">General Info</CardTitle>
                     </CardHeader>
                     <CardContent>
-                      {userData ? (
-                        <div className="grid gap-4">
-                          <div className="grid grid-cols-2 gap-4">
-                            <div>
-                              <div className="text-sm text-gray-500">Age</div>
-                              <div>{userData.age} years</div>
+                      <div className="grid gap-4">
+                        <div className="grid grid-cols-2 gap-4">
+                          <div>
+                            <div className="text-sm text-gray-500">Age</div>
+                              <div>38</div>
                             </div>
                             <div>
-                              <div className="text-sm text-gray-500">Sex</div>
-                              <div>{userData.sex}</div>
+                            <div className="text-sm text-gray-500">Mobile</div>
+                            <div>(224) 770-7887</div>
                             </div>
                           </div>
                           <div>
@@ -454,23 +453,11 @@ export default function Page() {
                           </div>
                           <div className="grid grid-cols-2 gap-4">
                             <div>
-                              <div className="text-sm text-gray-500">Height</div>
-                              <div>{userData.height} cm</div>
-                            </div>
-                            <div>
-                              <div className="text-sm text-gray-500">Weight</div>
-                              <div>{userData.weight} lbs</div>
+                              <div className="text-sm text-gray-500">Date of Birth</div>
+                              <div>March 22, 1986</div>
                             </div>
                           </div>
                         </div>
-                      ) : (
-                        <div className="space-y-4">
-                          <Skeleton className="h-4 w-full" />
-                          <Skeleton className="h-4 w-full" />
-                          <Skeleton className="h-4 w-full" />
-                          <Skeleton className="h-4 w-full" />
-                        </div>
-                      )}
                     </CardContent>
                   </Card>
                 </motion.div>
@@ -535,7 +522,7 @@ export default function Page() {
             >
               <Card className="bg-white/70 backdrop-blur-md border border-white/20 shadow-lg">
                 <CardHeader className="flex flex-row items-center justify-between">
-                  <CardTitle className="text-lg">Meal Records</CardTitle>
+                  <CardTitle className="text-lg">Meal Records & Exercise Log</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   {mealRecords.length > 0 ? (
@@ -550,15 +537,7 @@ export default function Page() {
                         <div className="grid gap-1">
                           <div className="text-sm text-gray-500">{record.date}</div>
                           <div>{record.brief}</div>
-                          <div className="text-sm text-gray-500">{record.specialist}</div>
-                        </div>
-                        <div className="flex gap-2">
-                          <Button size="icon" variant="ghost">
-                            <Download className="h-4 w-4" />
-                          </Button>
-                          <Button size="icon" variant="ghost">
-                            <MoreVertical className="h-4 w-4" />
-                          </Button>
+                          <div>{record.specialist}</div>
                         </div>
                       </motion.div>
                     ))

@@ -253,7 +253,7 @@ export default async function Home() {
           <div className="container mx-auto px-4">
             <div className="grid md:grid-cols-3 gap-8">
               <div>
-                <h3 className="text-lg font-semibold mb-4">MedFitTrack</h3>
+                <h3 className="text-lg font-semibold mb-4">MedMonitor</h3>
                 <p className="text-sm text-gray-400">
                   Empowering healthcare professionals with advanced nutrition and fitness tracking tools.
                 </p>
@@ -280,12 +280,12 @@ export default async function Home() {
               </div>
               <div>
                 <h3 className="text-lg font-semibold mb-4">Contact Us</h3>
-                <p className="text-sm text-gray-400">Email: info@medfittrack.com</p>
+                <p className="text-sm text-gray-400">Email: info@medmonitor.com</p>
                 <p className="text-sm text-gray-400">Phone: (555) 123-4567</p>
               </div>
             </div>
             <div className="mt-8 pt-8 border-t border-gray-700 text-center text-sm text-gray-400">
-              © 2025 MedFitTrack. All rights reserved.
+              © 2025 MedMonitor. All rights reserved.
             </div>
           </div>
         </footer>
