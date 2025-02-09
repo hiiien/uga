@@ -46,7 +46,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Mic, Phone, Video, MoreHorizontal, Download, MoreVertical, Bell } from "lucide-react"
 import { Sidebar } from "../sidebar"
-import { Calendar } from "@/components/ui/calendar"
+import Calendar from "@/components/ui/calendar"
 import NutrientChart from "@/components/NutrientChart"
 import { useRouter } from "next/navigation"
 import { useParams } from "next/navigation"
@@ -56,6 +56,14 @@ const NoSSRChart = dynamic(
   () => import("../../../components/ui/NoSSRChart"),
   { ssr: false }
 )
+
+const mockLog = {
+  "2_25_25": true, // Took meds ✅
+  "2_26_25": false, // Missed meds ❌
+  "2_27_25": true,
+  "2_28_25": false,
+  "2_29_25": true,
+}
 
 
 
@@ -295,10 +303,10 @@ export default function Page() {
           <div className="col-span-4 space-y-6">
           <Card className="bg-white/70 backdrop-blur-md border border-white/20 shadow-lg flex flex-col items-center">
             <CardHeader className="flex items-center justify-center">
-                <CardTitle className="text-lg">Tests & Results</CardTitle>
+                <CardTitle className="text-lg">Medication Log</CardTitle>
             </CardHeader>
                 <CardContent className="space-y-6 flex flex-col items-center justify-center">
-                    <Calendar />
+                    <Calendar log={mockLog} />
                 </CardContent>
             </Card>
 
