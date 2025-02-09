@@ -11,6 +11,7 @@ import {
   ChartTooltipContent,
 } from "@/components/ui/chart"
 import { useEffect, useState } from "react"
+import Papa from "papaparse"
 
 const chartData = [
   { month: "January", recommended: 186, current: 80 },
@@ -33,9 +34,34 @@ const chartConfig = {
 } satisfies ChartConfig
 
 export default function Component() {
+  const [data, setData] = useState<any[]>([]);
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const response = await fetch("/nutrient_requirements.csv"); // Fetch CSV from public folder
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const text = await response.text();
 
+        // Parse CSV
+        Papa.parse(text, {
+          header: true, // Convert rows into objects
+          skipEmptyLines: true,
+          complete: (result: Papa.ParseResult<any>) => {
+            setData(result.data);
+            console.log(result.data);
+          },
+        });
+      } catch (error) {
+        console.error("Error fetching or parsing data:", error);
+      }
+    }
 
-  use
+    fetchData();
+  }, []);
+
+  
   return (
     <Card className="w-full max-w-lg border-none shadow-none">
       <CardHeader>
