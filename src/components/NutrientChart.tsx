@@ -90,8 +90,8 @@ export default function Component() {
             />
             <ChartTooltip content={<ChartTooltipContent hideLabel />} />
             <ChartLegend content={<ChartLegendContent />} />
-            <Bar dataKey="current" stackId="a" fill="hsl(var(--chart-3))" radius={[0, 0, 4, 4]} />
-            <Bar dataKey="recommended" stackId="a" fill="hsl(0, 73.90%, 52.00%)" radius={[4, 4, 0, 0]} />
+            <Bar dataKey="current" stackId="a" fill="hsl(0, 77%, 84%)" radius={[0, 0, 4, 4]} />
+            <Bar dataKey="recommended" stackId="a" fill="hsl(170.57, 76.92%, 64.31%)" radius={[4, 4, 0, 0]} />
           </BarChart>
         </ChartContainer>
       </CardContent>

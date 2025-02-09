@@ -71,8 +71,8 @@ function Calendar({
       }}
       // Use modifiersClassNames to assign colors based on enabled/disabled
       modifiersClassNames={{
-        disabled: "bg-custom-200 text-white cursor-not-allowed opacity-100",
-        enabled: "bg-custom-100 text-white cursor-pointer opacity-100",
+        disabled: "bg-custom-100 text-white cursor-not-allowed opacity-100",
+        enabled: "bg-custom-200 text-white cursor-pointer opacity-100",
       }}
       classNames={{
         months: "flex flex-col sm:flex-row space-y-4 sm:space-x-4 sm:space-y-0",

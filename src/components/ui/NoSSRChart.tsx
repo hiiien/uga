@@ -1,13 +1,41 @@
 "use client"
 import { PieChart, Pie, Cell, Tooltip } from "recharts"
 
+const recommendedData = [
+  { name: "Protein", value: 30 },
+  { name: "Carbs", value: 50 },
+  { name: "Fat", value: 20 },
+];
+
+const userData = [
+  { name: "Protein", value: 25 },
+  { name: "Carbs", value: 55 },
+  { name: "Fat", value: 20 },
+];
+
+const customColors = {
+  Protein: 'hsl(0, 77%, 84%)', // Replace with your custom color
+  Carbs: 'hsl(170.57, 76.92%, 64.31%)',   // Replace with your custom color
+  Fat: 'hsl(var(--chart-3))',     // Replace with your custom color
+};
+
 interface NoSSRChartProps {
   recommendedData: { name: string; value: number }[]
   userData: { name: string; value: number }[]
   COLORS: { [key: string]: string }
 }
 
-export default function NoSSRChart({ recommendedData, userData, COLORS }: NoSSRChartProps) {
+export default function App() {
+  return (
+    <NoSSRChart
+      recommendedData={recommendedData}
+      userData={userData}
+      COLORS={customColors}
+    />
+  );
+}
+
+function NoSSRChart({ recommendedData, userData, COLORS }: NoSSRChartProps) {
   return (
     <div className="flex flex-col items-center">
       <PieChart width={200} height={200}>
