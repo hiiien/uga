@@ -37,37 +37,49 @@ const chartConfig = {
 
 export default function Component() {
   const [data, setData] = useState<any[]>([]);
+  const [jsonData, setJsonData] = useState<any>(null);
 
   useEffect(() => {
-    async function fetchData() {
+    async function fetchFilteredFiles() {
       try {
-        const response = await fetch(`http://localhost:8080/get_all_users`, {
-          method: 'GET',
+        // Define query parameters
+        const queries = [
+          "queries=id:2052391306",
+          "queries=type:core"
+        ];
+
+        // Convert queries to a URL query string
+        const queryString = queries.join("&");
+        const url = `http://localhost:8080/filter_files?${queryString}`;
+
+        const response = await fetch(url, {
+          method: "GET"
         });
-  
-        console.log("Response:", response); // This logs the response metadata
-  
+
         if (!response.ok) {
-          throw new Error('Network response was not ok');
+          throw new Error(`HTTP error! Status: ${response.status}`);
         }
-  
-        const jsonData = await response.json(); // ✅ Parse response JSON
-        console.log("Fetched JSON Data:", jsonData); // Now it logs the actual data
-  
-        // Extracting the array from the object
-        if (jsonData && Array.isArray(jsonData.users)) {
-          setData(jsonData.users);
-        } else {
-          console.error("Expected an array but received:", jsonData);
-        }
+
+        const jsonData = await response.json();
+        console.log("Filtered Files:", jsonData);
+
+        // Save fetched data to state
+        setJsonData(jsonData);
+
       } catch (error) {
-        console.error('There was a problem with the fetch operation:', error);
+        console.error("Error fetching filtered files:", error);
       }
     }
-  
-    fetchData();
+
+    fetchFilteredFiles();
   }, []);
-  
+
+  // Use jsonData if available as an argument for getNutrientRequirements,
+  // adjust extraction as needed based on your jsonData structure.
+  const nutrientRequirements = jsonData
+    ? getNutrientRequirements("Males", jsonData.age)
+    : null;
+
   return (
     <Card className="w-full max-w-lg border-none shadow-none">
       <CardHeader>
@@ -95,6 +107,12 @@ export default function Component() {
       <CardFooter className="flex-col items-start gap-2 text-sm">
         <div className="leading-none text-muted-foreground">Showing Patient Nutrient Deficiencies</div>
       </CardFooter>
+      <div>
+        {nutrientRequirements
+          ? <div>Nutrient Requirements: {JSON.stringify(nutrientRequirements)}</div>
+          : <div>Loading nutrient data...</div>
+        }
+      </div>
     </Card>
   )
 }
