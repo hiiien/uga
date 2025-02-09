@@ -5,7 +5,7 @@ import { Clock, Phone, Plus, Trash2, User } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { Sidebar } from "./sidebar"
+import { Sidebar } from "../sidebar"
 
 export function ScheduleCall() {
   const [name, setName] = useState("")
