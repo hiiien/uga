@@ -51,6 +51,8 @@ import NutrientChart from "@/components/NutrientChart"
 import { useRouter } from "next/navigation"
 import { useParams } from "next/navigation"
 import { set, setDate } from "date-fns"
+import { Skeleton } from "@/components/ui/skeleton"
+import { motion } from "framer-motion"
 
 // Dynamically import NoSSRChart with SSR disabled
 const NoSSRChart = dynamic(() => import("../../../components/ui/NoSSRChart"), { ssr: false })
