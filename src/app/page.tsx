@@ -1,8 +1,10 @@
 import Image from "next/image"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
+import { auth0 } from "@/lib/auth0"
 
-export default function LandingPage() {
+export default async  function LandingPage() {
+  const session = await auth0.getSession();
   return (
     <div className="min-h-screen bg-white">
       {/* Header */}
@@ -24,11 +26,11 @@ export default function LandingPage() {
             </Link>
           </nav>
           <div className="flex space-x-2">
-            <Button variant="outline" asChild>
-              <Link href="/login">Log In</Link>
+            <Button variant="outline" >
+              <Link href="/auth/login">Log In</Link>
             </Button>
             <Button className="bg-[#5eead4] hover:bg-[#99f6e4] text-gray-800" asChild>
-              <Link href="/signup">Sign Up</Link>
+              <Link href="/auth/login?screen_hint=signup">Sign Up</Link>
             </Button>
           </div>
         </div>
