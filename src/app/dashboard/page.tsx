@@ -12,24 +12,24 @@ import { useRouter } from "next/navigation"
 import Card from "@/components/Card"
 
 
-var users = [
+const users = [
     {
-      id: "2247707887",
       name: "Jay Roy",
-      age: "22",
-      sex: "male",
-      height: "179",
-      weight: "160",
+      age: 22,
+      sex: "male", 
+      height: 179,
+      weight: 160,
       address: "905 2nd St",
+      phone_number: "2247707887",
     },
     {
-      id: "4703300803",
       name: "Henk Boerman",
-      age: "53",
+      age: 53,
       sex: "male",
-      height: "175",
-      weight: "170",
+      height: 175,
+      weight: 170,
       address: "123 4th Ave",
+      phone_number: "4703300803",
     },
   ]
 
@@ -136,7 +136,7 @@ export default function Page() {
         </header>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-        {data.map((user) => (
+        {users.map((user) => (
             <Card
               key={user.name}
               user={user}
