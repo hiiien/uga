@@ -7,9 +7,9 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Mic, Phone, Video, MoreHorizontal, Download, MoreVertical, Bell } from "lucide-react"
 import { Sidebar } from "./sidebar"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 
-const users = [
+var users = [
     {
       id: "2247707887",
       name: "Jay Roy",
@@ -32,6 +32,18 @@ const users = [
 
 const TooltipButton = () => {
     const [open, setOpen] = useState(false)
+
+    useEffect(() => {
+      const fetchData = async () => {
+        const response = await fetch(`http://localhost:8080/get_all_users`);
+        const data = await response.json();
+        console.log(data);
+        users = data[0];
+      };
+  
+      fetchData();
+  
+    }, []);
 
     return (
         <div className="relative inline-block">
@@ -106,30 +118,46 @@ export default function Page() {
           </div>
         </header>
 
-        <div className="mb-8">
-        {users.map((user) => (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+          {users.map((user) => (
             <Card
               key={user.id}
-              className="cursor-pointer hover:shadow-md transition"
+              className="cursor-pointer hover:shadow-md transition duration-200 border border-gray-200/50 backdrop-blur-sm bg-white/50"
               onClick={() => redirect(`/${user.id}`)}
             >
-              <CardContent className="p-4 flex items-center justify-between">
-                <div className="flex items-center gap-4">
-                  <Avatar>
-                    <AvatarImage src="https://via.placeholder.com/50" alt={user.name} />
-                    <AvatarFallback>{user.name.charAt(0)}</AvatarFallback>
-                  </Avatar>
-                  <div>
-                    <h2 className="text-lg font-semibold">{user.name}</h2>
-                    <p className="text-gray-500">Age: {user.age}, {user.sex}</p>
+              <CardContent className="p-6">
+                <div className="flex flex-col gap-4">
+                  <div className="flex items-center gap-4">
+                    <Avatar className="h-12 w-12">
+                      <AvatarImage src="https://via.placeholder.com/50" alt={user.name} />
+                      <AvatarFallback>{user.name.charAt(0)}</AvatarFallback>
+                    </Avatar>
+                    <div>
+                      <h2 className="text-xl font-semibold text-gray-900">{user.name}</h2>
+                      <p className="text-gray-500">Age: {user.age}, {user.sex}</p>
+                    </div>
+                  </div>
+                  <p className="text-gray-600 text-sm leading-relaxed">
+                    {user.address}
+                  </p>
+                  <div className="flex justify-end mt-2">
+                    <Button 
+                      size="sm" 
+                      variant="outline" 
+                      onClick={(e) => { 
+                        e.stopPropagation(); 
+                        redirect(`dashboard/${user.id}`) 
+                      }}
+                      className="text-teal-600 hover:text-teal-700 border-teal-200 hover:border-teal-300 bg-teal-50/50"
+                    >
+                      View Details
+                    </Button>
                   </div>
                 </div>
-                <Button size="sm" variant="outline" onClick={(e) => { e.stopPropagation(); redirect(`dashboard/${user.id}`) }}>
-                  View Details
-                </Button>
               </CardContent>
             </Card>
-          ))}        </div>
+          ))}
+        </div>
       </main>
     </div>
   )

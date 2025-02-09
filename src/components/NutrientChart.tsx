@@ -44,8 +44,7 @@ export default function Component() {
       try {
         // Define query parameters
         const queries = [
-          "queries=id:2052391306",
-          "queries=type:core"
+          "queries=id:2052391306"
         ];
 
         // Convert queries to a URL query string
