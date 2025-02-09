@@ -12,6 +12,8 @@ import {
 } from "@/components/ui/chart"
 import { useEffect, useState } from "react"
 import Papa from "papaparse"
+import { getNutrientRequirements } from "@/utils/nutrientRequirements"
+import { get } from "http"
 
 const chartData = [
   { month: "January", recommended: 186, current: 80 },
@@ -33,32 +35,16 @@ const chartConfig = {
   },
 } satisfies ChartConfig
 
+
+// 
+// 
+// 
+// DOES NOT PASS ACTUAL DATA
 export default function Component() {
   const [data, setData] = useState<any[]>([]);
   useEffect(() => {
-    async function fetchData() {
-      try {
-        const response = await fetch("/nutrient_requirements.csv"); // Fetch CSV from public folder
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        const text = await response.text();
-
-        // Parse CSV
-        Papa.parse(text, {
-          header: true, // Convert rows into objects
-          skipEmptyLines: true,
-          complete: (result: Papa.ParseResult<any>) => {
-            setData(result.data);
-            console.log(result.data);
-          },
-        });
-      } catch (error) {
-        console.error("Error fetching or parsing data:", error);
-      }
-    }
-
-    fetchData();
+    const nutrients = getNutrientRequirements("Infants", 0.5)
+    console.log(nutrients)
   }, []);
 
   
