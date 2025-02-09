@@ -295,6 +295,7 @@ export default function Page() {
               <Card className="bg-white/70 backdrop-blur-md border border-white/20 shadow-lg">
                 <CardHeader className="flex flex-row items-center justify-between">
                   <CardTitle className="text-lg">Meal Records & Exercise Log</CardTitle>
+                  <CardTitle className="text-lg">Meal Records & Exercise Log</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   {mealRecords.length > 0 ? (
@@ -309,6 +310,7 @@ export default function Page() {
                         <div className="grid gap-1">
                           <div className="text-sm text-gray-500">{record.date}</div>
                           <div>{record.brief}</div>
+                          <div>{record.specialist}</div>
                           <div>{record.specialist}</div>
                         </div>
                       </motion.div>
