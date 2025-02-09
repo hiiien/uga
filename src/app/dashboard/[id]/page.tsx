@@ -1,3 +1,42 @@
+// "use client"
+
+// import { useRouter } from "next/navigation"
+// import { useEffect, useState } from "react"
+// import { useParams } from "next/navigation"
+
+// export default function UserDashboard() {
+//   const { id } = useParams()  // Dynamically gets the user ID from the URL
+//   const [userData, setUserData] = useState<any>(null)
+//   const router = useRouter()
+
+//   useEffect(() => {
+//     // Fetch user data based on id or set some state
+//     async function fetchUserData() {
+//       // Replace with your actual API call or logic
+//       const response = await fetch(`/api/users/${id}`)
+//       if (response.ok) {
+//         const data = await response.json()
+//         setUserData(data)
+//       } else {
+//         // Handle error or redirect if user not found
+//         router.push("/dashboard")
+//       }
+//     }
+//     fetchUserData()
+//   }, [id, router])
+
+//   return (
+//     <div>
+//       <h1>User Dashboard for {id}</h1>
+//       {userData ? (
+//         <pre>{JSON.stringify(userData, null, 2)}</pre>
+//       ) : (
+//         <p>Loading user data...</p>
+//       )}
+//     </div>
+//   )
+// }
+
 "use client"
 import React, { useState, useEffect } from "react"
 import dynamic from "next/dynamic"
@@ -9,6 +48,8 @@ import { Mic, Phone, Video, MoreHorizontal, Download, MoreVertical, Bell } from 
 import { Sidebar } from "../sidebar"
 import { Calendar } from "@/components/ui/calendar"
 import NutrientChart from "@/components/NutrientChart"
+import { useRouter } from "next/navigation"
+import { useParams } from "next/navigation"
 
 // Dynamically import NoSSRChart with SSR disabled
 const NoSSRChart = dynamic(
@@ -22,13 +63,12 @@ export default function Page() {
     { name: "Fats", value: 30 },
     { name: "Protein", value: 20 },
   ]
-  
-  // Random user data (for demonstration purposes)
-  const userData = [
-    { name: "Carbs", value: 40 },
-    { name: "Fats", value: 35 },
-    { name: "Protein", value: 25 },
-  ]
+
+  const { id } = useParams();  // Dynamically gets the user ID from the URL
+  const [data, setData] = useState<any>([]);
+  const [jsonData, setJsonData] = useState<any>(null);
+  const [dateData, setDateData] = useState<any>(null);
+  const router = useRouter()
   
   const COLORS = {
     Carbs: "hsl(0, 73.90%, 52.00%)",
@@ -40,27 +80,69 @@ export default function Page() {
   const [records, setRecords] = useState<any[]>([]);
   
   useEffect(() => {
-    const queries = ["type:core", "id:123"];
-    const queryString = queries
-      .map(query => `queries=${encodeURIComponent(query)}`)
-      .join("&");
+    async function fetchFilteredFiles() {
+        try {
+          // Define query parameters
+          const queries = [
+            "queries=id:" + id,
+            "queries=type:core"
+          ];
   
-    fetch(`http://14b2-198-137-18-213.ngrok-free.app/filter_files?${queryString}`, {
-      method: "GET",
-    })
-      .then(response => {
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
+          // Convert queries to a URL query string
+          const queryString = queries.join("&");
+          const url = `http://localhost:8080/filter_files?${queryString}`;
+  
+          const response = await fetch(url, {
+            method: "GET"
+          });
+  
+          if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+          }
+  
+          const jsonData = await response.json();
+          console.log("Filtered Files:", jsonData);
+  
+          // Save fetched data to state
+          setJsonData(jsonData);
+  
+        } catch (error) {
+          console.error("Error fetching filtered files:", error);
         }
-        return response.json();
-      })
-      .then(data => {
-        console.log(data); // Handle the data received from the server
-        setRecords(data);
-      })
-      .catch(error => {
-        console.error("There was a problem with the fetch operation:", error);
-      });
+      }
+      async function fetchDateFile() {
+        try {
+          // Define query parameters
+          const queries = [
+            "queries=id:" + id,
+            "queries=type:date"
+          ];
+  
+          // Convert queries to a URL query string
+          const queryString = queries.join("&");
+          const url = `http://localhost:8080/filter_files?${queryString}`;
+  
+          const response = await fetch(url, {
+            method: "GET"
+          });
+  
+          if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+          }
+  
+          const dateData = await response.json();
+          console.log("Filtered Files:", dateData);
+  
+          // Save fetched data to state
+          setDateData(dateData);
+  
+        } catch (error) {
+          console.error("Error fetching filtered files:", error);
+        }
+      }
+      
+      fetchFilteredFiles();
+      fetchDateFile();
   }, []);
   
   return (
@@ -88,7 +170,6 @@ export default function Page() {
             <div className="flex items-center gap-2">
               <span className="text-gray-500">List of patients</span>
               <span className="text-gray-500">/</span>
-              <span>Henk Boerman</span>
             </div>
           </div>
           <div className="flex items-center gap-4">
@@ -190,7 +271,7 @@ export default function Page() {
                     <CardTitle className="text-lg text-center">Nutrition Ratio</CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <NoSSRChart recommendedData={recommendedData} userData={userData} COLORS={COLORS} />
+                    <NoSSRChart recommendedData={recommendedData} userData={data} COLORS={COLORS} />
                   </CardContent>
                 </Card>
               </div>
@@ -250,4 +331,3 @@ export default function Page() {
     </div>
   )
 }
-
