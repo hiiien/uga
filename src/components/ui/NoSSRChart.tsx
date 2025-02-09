@@ -1,6 +1,8 @@
 "use client"
 import { PieChart, Pie, Cell, Tooltip } from "recharts";
 
+
+
 interface NoSSRChartProps {
   recommendedData: { name: string; value: number }[];
   userData: { name: string; value: number }[];

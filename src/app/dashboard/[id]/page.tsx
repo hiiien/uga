@@ -84,6 +84,7 @@ export default function Page() {
   useEffect(() => {
     async function fetchFilteredFiles() {
         try {
+          console.log("A")
           // Define query parameters
           const queries = [
             "queries=id:" + id,
@@ -97,6 +98,7 @@ export default function Page() {
           const response = await fetch(url, {
             method: "GET"
           });
+          console.log("FilterFile", response.text)
   
           if (!response.ok) {
             throw new Error(`HTTP error! Status: ${response.status}`);
@@ -127,6 +129,8 @@ export default function Page() {
           const response = await fetch(url, {
             method: "GET"
           });
+
+          console.log("DataFile: ", response)
   
           if (!response.ok) {
             throw new Error(`HTTP error! Status: ${response.status}`);
