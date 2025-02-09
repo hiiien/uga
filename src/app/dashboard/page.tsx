@@ -92,7 +92,6 @@ export default function Page() {
             <div className="flex items-center gap-2">
               <span className="text-gray-500">List of patients</span>
               <span className="text-gray-500">/</span>
-              <span>Henk Boerman</span>
             </div>
           </div>
           <div className="flex items-center gap-4">
