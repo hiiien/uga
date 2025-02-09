@@ -159,21 +159,23 @@ export default async function Home() {
         {/* Header */}
         <header className="border-b border-gray-200 shadow-sm">
           <div className="container mx-auto px-4 py-4 flex justify-between items-center">
-            <div className="flex items-center">
+            <div className="flex items-center flex-grow">
               <Image src="/placeholder.svg?height=40&width=40" alt="Logo" width={40} height={40} className="mr-2" />
               <span className="text-xl font-bold text-gray-800">HealthyHabits</span>
             </div>
-            <nav className="hidden md:flex space-x-4 items-center text-center">
+            <nav className="hidden md:flex space-x-4 items-center justify-center text-center">
               <Link href="#features" className="text-gray-600 hover:text-gray-800">
-                Features
+          Features
               </Link>
               <Link href="#testimonials" className="text-gray-600 hover:text-gray-800">
-                Testimonials
+          Testimonials
               </Link>
               <Link href="#contact" className="text-gray-600 hover:text-gray-800">
-                Contact
+          Contact
               </Link>
             </nav>
+            <div className="flex-grow flex justify-center" style={{ width: 170, height: 40 }}>
+            </div>
           </div>
         </header>
   
