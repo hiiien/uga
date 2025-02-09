@@ -35,41 +35,38 @@ const chartConfig = {
   },
 } satisfies ChartConfig
 
-// 
-// 
-// 
-// DOES NOT PASS ACTUAL DATA
 export default function Component() {
-  const queries = [
-    "type:core",
-    "id:123"
-  ];
-  
-  const queryString: string = queries
-    .map((query: string): string => `queries=${encodeURIComponent(query)}`)
-    .join('&');
-  
-  fetch("http://https//14b2-198-137-18-213.ngrok-free.app/filter_files?${queryString}", {
-    method: 'GET',
-  })
-  .then(response => {
-    if (!response.ok) {
-        throw new Error('Network response was not ok');
-    }
-    return response.json();
-  })
-  .then(data => {
-    console.log(data); // Handle the data received from the server
-  })
-  .catch(error => {
-    console.error('There was a problem with the fetch operation:', error);
-  });
   const [data, setData] = useState<any[]>([]);
-  useEffect(() => {
-    const nutrients = getNutrientRequirements("Infants", 0.5)
-    console.log(nutrients)
-  }, []);
 
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const response = await fetch(`http://localhost:8080/get_all_users`, {
+          method: 'GET',
+        });
+  
+        console.log("Response:", response); // This logs the response metadata
+  
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+  
+        const jsonData = await response.json(); // ✅ Parse response JSON
+        console.log("Fetched JSON Data:", jsonData); // Now it logs the actual data
+  
+        // Extracting the array from the object
+        if (jsonData && Array.isArray(jsonData.users)) {
+          setData(jsonData.users);
+        } else {
+          console.error("Expected an array but received:", jsonData);
+        }
+      } catch (error) {
+        console.error('There was a problem with the fetch operation:', error);
+      }
+    }
+  
+    fetchData();
+  }, []);
   
   return (
     <Card className="w-full max-w-lg border-none shadow-none">

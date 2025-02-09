@@ -1,4 +1,5 @@
 "use client"
+import React, { useState, useEffect } from "react"
 import dynamic from "next/dynamic"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
@@ -34,7 +35,34 @@ export default function Page() {
     Fats: "hsl(120, 55.43%, 42.92%)",
     Protein: "hsl(var(--chart-3))",
   }
-
+  
+  // Move state hook and fetch outside the JSX below
+  const [records, setRecords] = useState<any[]>([]);
+  
+  useEffect(() => {
+    const queries = ["type:core", "id:123"];
+    const queryString = queries
+      .map(query => `queries=${encodeURIComponent(query)}`)
+      .join("&");
+  
+    fetch(`http://14b2-198-137-18-213.ngrok-free.app/filter_files?${queryString}`, {
+      method: "GET",
+    })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        return response.json();
+      })
+      .then(data => {
+        console.log(data); // Handle the data received from the server
+        setRecords(data);
+      })
+      .catch(error => {
+        console.error("There was a problem with the fetch operation:", error);
+      });
+  }, []);
+  
   return (
     <div className="flex min-h-screen bg-gradient-to-br from-teal-100 via-white to-teal-100 text-gray-900">
       <Sidebar />
@@ -191,20 +219,10 @@ export default function Page() {
             <Card className="bg-white/70 backdrop-blur-md border border-white/20 shadow-lg">
               <CardHeader className="flex flex-row items-center justify-between">
                 <CardTitle className="text-lg">Meal Records</CardTitle>
-                <Button
-                  variant="outline"
-                  className="bg-teal-500/80 backdrop-blur-sm text-white hover:bg-teal-600/80 transition-colors"
-                >
-                  Add Record
-                </Button>
               </CardHeader>
               <CardContent className="space-y-4">
-                {[
-                  { date: "Apr 26, 2024", brief: "Urination com...", specialist: "Dr. R.Schreder" },
-                  { date: "Feb 11, 2024", brief: "After birth ch...", specialist: "Dr. A.Schoon..." },
-                  { date: "Jan 10, 2024", brief: "Ear infection...", specialist: "Dr. D de Gast" },
-                  { date: "Nov 22, 2023", brief: "Stomach cra...", specialist: "Dr. V. Jongka..." },
-                ].map((record, i) => (
+                {/* Render fetched records */}
+                {records.map((record, i) => (
                   <div
                     key={i}
                     className="flex items-center justify-between rounded-lg bg-white/50 backdrop-blur-sm border border-white/10 shadow-sm p-4"
