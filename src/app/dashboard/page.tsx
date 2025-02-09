@@ -70,7 +70,6 @@ const TooltipButton = () => {
 export default function Page() {
   return (
     <div className="flex min-h-screen bg-gradient-to-br from-teal-100 via-white to-teal-100 text-gray-900">
-      <Sidebar />
       <main className="flex-1 p-6">
         <header className="flex items-center justify-between mb-8">
           <div className="flex items-center gap-4">
