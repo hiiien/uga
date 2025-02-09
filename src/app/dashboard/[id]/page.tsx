@@ -57,12 +57,202 @@ import { motion } from "framer-motion"
 // Dynamically import NoSSRChart with SSR disabled
 const NoSSRChart = dynamic(() => import("../../../components/ui/NoSSRChart"), { ssr: false })
 
-const mockLog = {
-  "2_25_25": true, // Took meds ✅
-  "2_26_25": false, // Missed meds ❌
-  "2_27_25": true,
-  "2_28_25": false,
-  "2_29_25": true,
+const mockRecords = {
+  "2_8_25": {
+    "Food Info": {
+      "Protein": 0.2844,
+      "Fat": 0.0474,
+      "Carbs": 0,
+      "Calories": 2.37,
+      "Vitamin A": 0,
+      "Vitamin C": 0,
+      "Vitamin D": 0,
+      "Vitamin E": 0.0237,
+      "Vitamin K": 0.237,
+      "Thiamin": 0.0332,
+      "Riboflavin": 0.1801,
+      "Niacin": 0.4527,
+      "Vitamin B6": 0.0024,
+      "Folate": 4.74,
+      "Vitamin B12": 0,
+      "Pantothenic Acid": 0.602,
+      "Choline": 6.162,
+      "Calcium": 4.74,
+      "Copper": 0.0000047,
+      "Fluoride": 214959.0,
+      "Iron": 0.0237,
+      "Magnesium": 7.11,
+      "Manganese": 0,
+      "Phosphorus": 7.11,
+      "Selenium": 0,
+      "Zinc": 0.0474,
+      "Potassium": 116.13,
+      "Sodium": 4.74
+    },
+    "Medications": false,
+    "Exercises": [
+      {
+        "Name": "walking",
+        "Calories Burned": 61.25
+      }
+    ]
+  },
+  "2_9_25": {
+    "Food Info": {
+      "Protein": 0.312,
+      "Fat": 0.052,
+      "Carbs": 1.1,
+      "Calories": 3.15,
+      "Vitamin A": 5,
+      "Vitamin C": 2,
+      "Vitamin D": 0,
+      "Vitamin E": 0.025,
+      "Vitamin K": 0.250,
+      "Thiamin": 0.035,
+      "Riboflavin": 0.190,
+      "Niacin": 0.460,
+      "Vitamin B6": 0.003,
+      "Folate": 5.0,
+      "Vitamin B12": 0,
+      "Pantothenic Acid": 0.610,
+      "Choline": 6.5,
+      "Calcium": 5.0,
+      "Copper": 0.000005,
+      "Fluoride": 215000.0,
+      "Iron": 0.025,
+      "Magnesium": 7.5,
+      "Manganese": 0,
+      "Phosphorus": 7.5,
+      "Selenium": 0,
+      "Zinc": 0.050,
+      "Potassium": 118.0,
+      "Sodium": 5.0
+    },
+    "Medications": true,
+    "Exercises": [
+      {
+        "Name": "running",
+        "Calories Burned": 120.5
+      }
+    ]
+  },
+  "2_10_25": {
+    "Food Info": {
+      "Protein": 0.290,
+      "Fat": 0.048,
+      "Carbs": 0.5,
+      "Calories": 2.85,
+      "Vitamin A": 3,
+      "Vitamin C": 1.5,
+      "Vitamin D": 0,
+      "Vitamin E": 0.024,
+      "Vitamin K": 0.240,
+      "Thiamin": 0.034,
+      "Riboflavin": 0.185,
+      "Niacin": 0.455,
+      "Vitamin B6": 0.0025,
+      "Folate": 4.8,
+      "Vitamin B12": 0,
+      "Pantothenic Acid": 0.605,
+      "Choline": 6.3,
+      "Calcium": 4.8,
+      "Copper": 0.0000048,
+      "Fluoride": 214980.0,
+      "Iron": 0.024,
+      "Magnesium": 7.2,
+      "Manganese": 0,
+      "Phosphorus": 7.2,
+      "Selenium": 0,
+      "Zinc": 0.048,
+      "Potassium": 117.5,
+      "Sodium": 4.8
+    },
+    "Medications": true,
+    "Exercises": [
+      {
+        "Name": "cycling",
+        "Calories Burned": 90.75
+      }
+    ]
+  },
+  "2_11_25": {
+    "Food Info": {
+      "Protein": 0.275,
+      "Fat": 0.045,
+      "Carbs": 0.3,
+      "Calories": 2.50,
+      "Vitamin A": 2,
+      "Vitamin C": 1,
+      "Vitamin D": 0,
+      "Vitamin E": 0.022,
+      "Vitamin K": 0.230,
+      "Thiamin": 0.032,
+      "Riboflavin": 0.175,
+      "Niacin": 0.450,
+      "Vitamin B6": 0.0022,
+      "Folate": 4.6,
+      "Vitamin B12": 0,
+      "Pantothenic Acid": 0.600,
+      "Choline": 6.0,
+      "Calcium": 4.6,
+      "Copper": 0.0000045,
+      "Fluoride": 214950.0,
+      "Iron": 0.022,
+      "Magnesium": 7.0,
+      "Manganese": 0,
+      "Phosphorus": 7.0,
+      "Selenium": 0,
+      "Zinc": 0.045,
+      "Potassium": 115.0,
+      "Sodium": 4.6
+    },
+    "Medications": true,
+    "Exercises": [
+      {
+        "Name": "yoga",
+        "Calories Burned": 50.25
+      }
+    ]
+  },
+  "2_12_25": {
+    "Food Info": {
+      "Protein": 0.320,
+      "Fat": 0.055,
+      "Carbs": 1.2,
+      "Calories": 3.25,
+      "Vitamin A": 6,
+      "Vitamin C": 3,
+      "Vitamin D": 0,
+      "Vitamin E": 0.026,
+      "Vitamin K": 0.260,
+      "Thiamin": 0.036,
+      "Riboflavin": 0.195,
+      "Niacin": 0.470,
+      "Vitamin B6": 0.0035,
+      "Folate": 5.2,
+      "Vitamin B12": 0,
+      "Pantothenic Acid": 0.620,
+      "Choline": 6.7,
+      "Calcium": 5.2,
+      "Copper": 0.0000052,
+      "Fluoride": 215020.0,
+      "Iron": 0.026,
+      "Magnesium": 7.8,
+      "Manganese": 0,
+      "Phosphorus": 7.8,
+      "Selenium": 0,
+      "Zinc": 0.052,
+      "Potassium": 120.0,
+      "Sodium": 5.2
+    },
+    "Medications": true,
+    "Exercises": [
+      {
+        "Name": "swimming",
+        "Calories Burned": 130.0
+      }
+    ]
+  }
 }
 
 export default function Page() {
@@ -72,52 +262,48 @@ export default function Page() {
     { name: "Protein", value: 20 },
   ]
 
-  const { id } = useParams(); 
-  console.log("id", id)
-  const [data, setData] = useState<any>([]);
-  const [jsonData, setJsonData] = useState<any>(null);
-  const [dateData, setDateData] = useState<any>(null);
-  const [records, setRecords] = useState<any[]>([]);
+  const { id } = useParams();
   const router = useRouter()
+
+  // Calculate nutrition data from mockRecords
+  const nutritionData = Object.values(mockRecords).map(record => ({
+    Protein: record["Food Info"].Protein,
+    Fat: record["Food Info"].Fat,
+    Carbs: record["Food Info"].Carbs
+  }));
+
+  // Calculate average nutrition values
+  const averageNutrition = nutritionData.reduce((acc, curr) => ({
+    Protein: acc.Protein + curr.Protein,
+    Fat: acc.Fat + curr.Fat,
+    Carbs: acc.Carbs + curr.Carbs
+  }), { Protein: 0, Fat: 0, Carbs: 0 });
+
+  const data = [
+    { name: "Carbs", value: (averageNutrition.Carbs / nutritionData.length) * 100 },
+    { name: "Fats", value: (averageNutrition.Fat / nutritionData.length) * 100 },
+    { name: "Protein", value: (averageNutrition.Protein / nutritionData.length) * 100 },
+  ];
+
+  // Create medication log from mockRecords
+  const medicationLog = Object.entries(mockRecords).reduce<Record<string, boolean>>((acc, [date, record]) => {
+    acc[date] = record.Medications;
+    return acc;
+  }, {});
+
+  // Create meal records from mockRecords
+  const mealRecords = Object.entries(mockRecords).map(([date, record]) => ({
+    date: date.replace(/_/g, "/"),
+    brief: `Calories: ${record["Food Info"].Calories}`,
+    specialist: `Exercise: ${record.Exercises[0].Name}`
+  }));
 
   const COLORS = {
     Protein: "hsl(0, 77%, 84%)",
     Carbs: "hsl(170.57, 76.92%, 64.31%)",
     Fat: "hsl(var(--chart-3))",
   };
-    
-  useEffect(() => {
-    async function fetchData() {
-      try {
-        const coreQuery = `queries=id:${id}&queries=type:core`;
-        const dateQuery = `queries=id:${id}&queries=type:date`;
-        const coreUrl = `http://localhost:8080/filter_files?${coreQuery}`;
-        const dateUrl = `http://localhost:8080/filter_files?${dateQuery}`;
 
-        const [coreResponse, dateResponse] = await Promise.all([
-          fetch(coreUrl, { method: "GET" }),
-          fetch(dateUrl, { method: "GET" })
-        ]);
-        
-        if (!coreResponse.ok || !dateResponse.ok) {
-          throw new Error("Failed to fetch data");
-        }
-
-        const coreData = await coreResponse.json();
-        const dateData = await dateResponse.json();
-
-        console.log("Core Data:", coreData);
-        console.log("Date Data:", dateData);
-
-        setJsonData(coreData[0]);
-        setDateData(dateData);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    }
-    fetchData();
-  }, [id]);
-  
   return (
     <div className="flex min-h-screen bg-gradient-to-br from-teal-100 via-white to-teal-100 text-gray-900">
       <Sidebar />
@@ -192,8 +378,8 @@ export default function Page() {
                     <AvatarFallback>HB</AvatarFallback>
                   </Avatar>
                   <div>
-                    <h2 className="text-2xl font-semibold">{jsonData?.name}</h2>
-                    <p className="text-gray-500"></p>
+                    <h2 className="text-2xl font-semibold">Hans Brinker</h2>
+                    <p className="text-gray-500">Patient ID: {id}</p>
                   </div>
                 </div>
                 <div className="flex gap-2">
@@ -226,11 +412,10 @@ export default function Page() {
                       <CardTitle className="text-lg">General Info</CardTitle>
                     </CardHeader>
                     <CardContent>
-                      {jsonData ? (
-                        <div className="grid gap-4">
-                          <div className="grid grid-cols-2 gap-4">
-                            <div>
-                              <div className="text-sm text-gray-500">Date of birth</div>
+                      <div className="grid gap-4">
+                        <div className="grid grid-cols-2 gap-4">
+                          <div>
+                            <div className="text-sm text-gray-500">Date of birth</div>
                               <div>09 March 1953</div>
                             </div>
                             <div>
@@ -260,7 +445,7 @@ export default function Page() {
                           <Skeleton className="h-4 w-full" />
                           <Skeleton className="h-4 w-full" />
                         </div>
-                      )}
+                      )
                     </CardContent>
                   </Card>
                 </motion.div>
@@ -294,7 +479,7 @@ export default function Page() {
                 <Card className="bg-white/70 backdrop-blur-md border border-white/20 shadow-lg">
                   <CardHeader className="flex flex-row items-center justify-between">
                     <CardContent className="w-full flex flex-col items-center justify-center border-none shadow-none">
-                      {dateData ? <NutrientChart /> : <Skeleton className="h-[300px] w-full" />}
+                      {data.length > 0 ? <NutrientChart /> : <Skeleton className="h-[300px] w-full" />}
                     </CardContent>
                   </CardHeader>
                 </Card>
@@ -313,7 +498,7 @@ export default function Page() {
                   <CardTitle className="text-lg">Medication Log</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-6 flex flex-col items-center justify-center">
-                  {dateData ? <Calendar log={mockLog} /> : <Skeleton className="h-[300px] w-full" />}
+                  {medicationLog ? <Calendar log={medicationLog} /> : <Skeleton className="h-[300px] w-full" />}
                 </CardContent>
               </Card>
             </motion.div>
@@ -328,8 +513,8 @@ export default function Page() {
                   <CardTitle className="text-lg">Meal Records</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
-                  {records.length > 0 ? (
-                    records.map((record, i) => (
+                  {mealRecords.length > 0 ? (
+                    mealRecords.map((record, i) => (
                       <motion.div
                         key={i}
                         initial={{ opacity: 0, y: 10 }}
