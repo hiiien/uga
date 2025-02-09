@@ -1,4 +1,5 @@
 "use client"
+import { redirect } from "next/navigation"
 import dynamic from "next/dynamic"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
@@ -6,35 +7,34 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Mic, Phone, Video, MoreHorizontal, Download, MoreVertical, Bell } from "lucide-react"
 import { Sidebar } from "./sidebar"
-import { Calendar } from "@/components/ui/calendar"
-import NutrientChart from "@/components/NutrientChart"
+import { useState } from "react"
 
-// Dynamically import NoSSRChart with SSR disabled
-const NoSSRChart = dynamic(
-  () => import("../../components/ui/NoSSRChart"),
-  { ssr: false }
-)
+const TooltipButton = () => {
+    const [open, setOpen] = useState(false)
+
+    return (
+        <div className="relative inline-block">
+            <Button size="icon" variant="outline" onClick={() => setOpen(!open)}>
+                <MoreHorizontal className="h-5 w-5" />
+            </Button>
+            {open && (
+                <div className="absolute right-0 mt-2 w-32 p-2 bg-white border rounded-sm border-gray-200 shadow-md">
+                    <button
+                        onClick={() => {
+                            // Add your open option logic here
+                            redirect("/dashboard/id")
+                        }}
+                        className="w-full text-left text-sm"
+                    >
+                        Open
+                    </button>
+                </div>
+            )}
+        </div>
+    )
+}
 
 export default function Page() {
-  const recommendedData = [
-    { name: "Carbs", value: 50 },
-    { name: "Fats", value: 30 },
-    { name: "Protein", value: 20 },
-  ]
-  
-  // Random user data (for demonstration purposes)
-  const userData = [
-    { name: "Carbs", value: 40 },
-    { name: "Fats", value: 35 },
-    { name: "Protein", value: 25 },
-  ]
-  
-  const COLORS = {
-    Carbs: "hsl(0, 73.90%, 52.00%)",
-    Fats: "hsl(120, 55.43%, 42.92%)",
-    Protein: "hsl(var(--chart-3))",
-  }
-
   return (
     <div className="flex min-h-screen bg-gradient-to-br from-teal-100 via-white to-teal-100 text-gray-900">
       <Sidebar />
@@ -111,125 +111,13 @@ export default function Page() {
                   <Button size="icon" variant="outline">
                     <Video className="h-5 w-5" />
                   </Button>
-                  <Button size="icon" variant="outline">
-                    <MoreHorizontal className="h-5 w-5" />
-                  </Button>
+                <TooltipButton />
                 </div>
               </div>
             </CardContent>
           </Card>
         </div>
-
-        <div className="grid grid-cols-12 gap-6">
-          <div className="col-span-8">
-            <div className="grid gap-6">
-              <div className="grid grid-cols-2 gap-6">
-                <Card className="bg-white/70 backdrop-blur-md border border-white/20 shadow-lg">
-                  <CardHeader>
-                    <CardTitle className="text-lg">General Info</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="grid gap-4">
-                      <div className="grid grid-cols-2 gap-4">
-                        <div>
-                          <div className="text-sm text-gray-500">Date of birth</div>
-                          <div>09 March 1953</div>
-                        </div>
-                        <div>
-                          <div className="text-sm text-gray-500">CSN</div>
-                          <div>1224 9200 01</div>
-                        </div>
-                      </div>
-                      <div>
-                        <div className="text-sm text-gray-500">Address</div>
-                        <div>V.Horta 6, Utrecht</div>
-                      </div>
-                      <div className="grid grid-cols-2 gap-4">
-                        <div>
-                          <div className="text-sm text-gray-500">Insurance</div>
-                          <div>CZ, 3661254</div>
-                        </div>
-                        <div>
-                          <div className="text-sm text-gray-500">Mobile</div>
-                          <div>0612352296</div>
-                        </div>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-                <Card className="bg-white/70 backdrop-blur-md border border-white/20 shadow-lg">
-                  <CardHeader>
-                    <CardTitle className="text-lg text-center">Nutrition Ratio</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <NoSSRChart recommendedData={recommendedData} userData={userData} COLORS={COLORS} />
-                  </CardContent>
-                </Card>
-              </div>
-
-              <Card className="bg-white/70 backdrop-blur-md border border-white/20 shadow-lg">
-                <CardHeader className="flex flex-row items-center justify-between">
-                  <CardContent className="w-full flex flex-col items-center justify-center border-none shadow-none">
-                    <NutrientChart />
-                  </CardContent>  
-                </CardHeader>
-              </Card>
-            </div>
-          </div>
-
-          <div className="col-span-4 space-y-6">
-          <Card className="bg-white/70 backdrop-blur-md border border-white/20 shadow-lg flex flex-col items-center">
-            <CardHeader className="flex items-center justify-center">
-                <CardTitle className="text-lg">Tests & Results</CardTitle>
-            </CardHeader>
-                <CardContent className="space-y-6 flex flex-col items-center justify-center">
-                    <Calendar />
-                </CardContent>
-            </Card>
-
-
-            <Card className="bg-white/70 backdrop-blur-md border border-white/20 shadow-lg">
-              <CardHeader className="flex flex-row items-center justify-between">
-                <CardTitle className="text-lg">Meal Records</CardTitle>
-                <Button
-                  variant="outline"
-                  className="bg-teal-500/80 backdrop-blur-sm text-white hover:bg-teal-600/80 transition-colors"
-                >
-                  Add Record
-                </Button>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                {[
-                  { date: "Apr 26, 2024", brief: "Urination com...", specialist: "Dr. R.Schreder" },
-                  { date: "Feb 11, 2024", brief: "After birth ch...", specialist: "Dr. A.Schoon..." },
-                  { date: "Jan 10, 2024", brief: "Ear infection...", specialist: "Dr. D de Gast" },
-                  { date: "Nov 22, 2023", brief: "Stomach cra...", specialist: "Dr. V. Jongka..." },
-                ].map((record, i) => (
-                  <div
-                    key={i}
-                    className="flex items-center justify-between rounded-lg bg-white/50 backdrop-blur-sm border border-white/10 shadow-sm p-4"
-                  >
-                    <div className="grid gap-1">
-                      <div className="text-sm text-gray-500">{record.date}</div>
-                      <div>{record.brief}</div>
-                      <div className="text-sm text-gray-500">{record.specialist}</div>
-                    </div>
-                    <div className="flex gap-2">
-                      <Button size="icon" variant="ghost">
-                        <Download className="h-4 w-4" />
-                      </Button>
-                      <Button size="icon" variant="ghost">
-                        <MoreVertical className="h-4 w-4" />
-                      </Button>
-                    </div>
-                  </div>
-                ))}
-              </CardContent>
-            </Card>
-          </div>
-        </div>
       </main>
     </div>
   )
 }
-
