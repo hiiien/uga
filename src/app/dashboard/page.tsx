@@ -9,6 +9,27 @@ import { Mic, Phone, Video, MoreHorizontal, Download, MoreVertical, Bell } from 
 import { Sidebar } from "./sidebar"
 import { useState } from "react"
 
+const users = [
+    {
+      id: "2247707887",
+      name: "Jay Roy",
+      age: "22",
+      sex: "male",
+      height: "179",
+      weight: "160",
+      address: "905 2nd St",
+    },
+    {
+      id: "4703300803",
+      name: "Henk Boerman",
+      age: "53",
+      sex: "male",
+      height: "175",
+      weight: "170",
+      address: "123 4th Ave",
+    },
+  ]
+
 const TooltipButton = () => {
     const [open, setOpen] = useState(false)
 
@@ -88,35 +109,29 @@ export default function Page() {
         </header>
 
         <div className="mb-8">
-          <Card className="bg-white/70 backdrop-blur-md border border-white/20 shadow-lg">
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between">
+        {users.map((user) => (
+            <Card
+              key={user.id}
+              className="cursor-pointer hover:shadow-md transition"
+              onClick={() => redirect(`/${user.id}`)}
+            >
+              <CardContent className="p-4 flex items-center justify-between">
                 <div className="flex items-center gap-4">
-                  <Avatar className="h-16 w-16">
-                    <AvatarImage
-                      src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-P2vICEJIg813fYnqzfSBLL7xaRLH5t.png"
-                      alt="Patient"
-                    />
-                    <AvatarFallback>HB</AvatarFallback>
+                  <Avatar>
+                    <AvatarImage src="https://via.placeholder.com/50" alt={user.name} />
+                    <AvatarFallback>{user.name.charAt(0)}</AvatarFallback>
                   </Avatar>
                   <div>
-                    <h2 className="text-2xl font-semibold">Henk Boerman</h2>
-                    <p className="text-gray-500">boerman53@gmail.com</p>
+                    <h2 className="text-lg font-semibold">{user.name}</h2>
+                    <p className="text-gray-500">Age: {user.age}, {user.sex}</p>
                   </div>
                 </div>
-                <div className="flex gap-2">
-                  <Button size="icon" variant="outline">
-                    <Phone className="h-5 w-5" />
-                  </Button>
-                  <Button size="icon" variant="outline">
-                    <Video className="h-5 w-5" />
-                  </Button>
-                <TooltipButton />
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
+                <Button size="sm" variant="outline" onClick={(e) => { e.stopPropagation(); redirect(`dashboard/${user.id}`) }}>
+                  View Details
+                </Button>
+              </CardContent>
+            </Card>
+          ))}        </div>
       </main>
     </div>
   )
