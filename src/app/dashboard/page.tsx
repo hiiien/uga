@@ -31,21 +31,8 @@ var users = [
   ]
 
 const TooltipButton = () => {
-    const [open, setOpen] = useState(false)
-
-    useEffect(() => {
-      const fetchData = async () => {
-        const response = await fetch(`http://localhost:8080/get_all_users`);
-        const data = await response.json();
-        console.log(data);
-        users = data[0];
-      };
-  
-      fetchData();
-  
-    }, []);
-
-    return (
+    const [open, setOpen] = useState(false)    
+        return (
         <div className="relative inline-block">
             <Button size="icon" variant="outline" onClick={() => setOpen(!open)}>
                 <MoreHorizontal className="h-5 w-5" />
@@ -68,6 +55,32 @@ const TooltipButton = () => {
 }
 
 export default function Page() {
+  const [data, setData] = useState<any[]>([]);
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const response = await fetch('http://localhost:8080/get_user_info', {
+          method: 'GET',
+        });
+
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+
+        const jsonData = await response.json();
+        console.log("Fetched JSON Data:", jsonData);
+
+        // If the response structure is the array you provided, we directly set the data
+        setData(jsonData);
+      } catch (error) {
+        console.error('There was a problem with the fetch operation:', error);
+      }
+    }
+
+    fetchData();
+  }, []);
+
   return (
     <div className="flex min-h-screen bg-gradient-to-br from-teal-100 via-white to-teal-100 text-gray-900">
       <main className="flex-1 p-6">
@@ -119,44 +132,44 @@ export default function Page() {
         </header>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-          {users.map((user) => (
-            <Card
-              key={user.id}
-              className="cursor-pointer hover:shadow-md transition duration-200 border border-gray-200/50 backdrop-blur-sm bg-white/50"
-              onClick={() => redirect(`/${user.id}`)}
-            >
-              <CardContent className="p-6">
-                <div className="flex flex-col gap-4">
-                  <div className="flex items-center gap-4">
-                    <Avatar className="h-12 w-12">
-                      <AvatarImage src="https://via.placeholder.com/50" alt={user.name} />
-                      <AvatarFallback>{user.name.charAt(0)}</AvatarFallback>
-                    </Avatar>
-                    <div>
-                      <h2 className="text-xl font-semibold text-gray-900">{user.name}</h2>
-                      <p className="text-gray-500">Age: {user.age}, {user.sex}</p>
-                    </div>
-                  </div>
-                  <p className="text-gray-600 text-sm leading-relaxed">
-                    {user.address}
-                  </p>
-                  <div className="flex justify-end mt-2">
-                    <Button 
-                      size="sm" 
-                      variant="outline" 
-                      onClick={(e) => { 
-                        e.stopPropagation(); 
-                        redirect(`dashboard/${user.id}`) 
-                      }}
-                      className="text-teal-600 hover:text-teal-700 border-teal-200 hover:border-teal-300 bg-teal-50/50"
-                    >
-                      View Details
-                    </Button>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
+        {data.map((user) => (
+  <Card
+    key={user.name} // Assuming `name` is unique here
+    className="cursor-pointer hover:shadow-md transition duration-200 border border-gray-200/50 backdrop-blur-sm bg-white/50"
+    onClick={() => redirect(`/${user.phone_number}`)}
+  >
+    <CardContent className="p-6">
+      <div className="flex flex-col gap-4">
+        <div className="flex items-center gap-4">
+          <Avatar className="h-12 w-12">
+            <AvatarImage src="https://placehold.co/50" alt={user.name} />
+            <AvatarFallback>{user.name.charAt(0)}</AvatarFallback>
+          </Avatar>
+          <div>
+            <h2 className="text-xl font-semibold text-gray-900">{user.name}</h2>
+            <p className="text-gray-500">Age: {user.age}</p>
+          </div>
+        </div>
+        <p className="text-gray-600 text-sm leading-relaxed">
+          Weight: {user.weight} kg, Height: {user.height} cm
+        </p>
+        <div className="flex justify-end mt-2">
+          <Button 
+            size="sm" 
+            variant="outline" 
+            onClick={(e) => { 
+              e.stopPropagation(); 
+              redirect(`dashboard/${user.name}`) 
+            }}
+            className="text-teal-600 hover:text-teal-700 border-teal-200 hover:border-teal-300 bg-teal-50/50"
+          >
+            View Details
+          </Button>
+        </div>
+      </div>
+    </CardContent>
+  </Card>
+))}
         </div>
       </main>
     </div>
