@@ -50,8 +50,7 @@ import Calendar from "@/components/ui/calendar"
 import NutrientChart from "@/components/NutrientChart"
 import { useRouter } from "next/navigation"
 import { useParams } from "next/navigation"
-import { motion } from "framer-motion"
-import { Skeleton } from "@/components/ui/skeleton"
+import { set, setDate } from "date-fns"
 
 // Dynamically import NoSSRChart with SSR disabled
 const NoSSRChart = dynamic(() => import("../../../components/ui/NoSSRChart"), { ssr: false })
@@ -71,83 +70,52 @@ export default function Page() {
     { name: "Protein", value: 20 },
   ]
 
-  const { id } = useParams() // Dynamically gets the user ID from the URL
-  const [data, setData] = useState<any>([])
-  const [jsonData, setJsonData] = useState<any>(null)
-  const [dateData, setDateData] = useState<any>(null)
+  const { id } = useParams(); 
+  console.log("id", id)
+  const [data, setData] = useState<any>([]);
+  const [jsonData, setJsonData] = useState<any>(null);
+  const [dateData, setDateData] = useState<any>(null);
+  const [records, setRecords] = useState<any[]>([]);
   const router = useRouter()
 
   const COLORS = {
     Protein: "hsl(0, 77%, 84%)",
     Carbs: "hsl(170.57, 76.92%, 64.31%)",
     Fat: "hsl(var(--chart-3))",
-  }
-
-  // Move state hook and fetch outside the JSX below
-  const [records, setRecords] = useState<any[]>([])
-
+  };
+    
   useEffect(() => {
-    async function fetchFilteredFiles() {
+    async function fetchData() {
       try {
-        console.log("A")
-        // Define query parameters
-        const queries = ["queries=id:" + id, "queries=type:core"]
+        const coreQuery = `queries=id:${id}&queries=type:core`;
+        const dateQuery = `queries=id:${id}&queries=type:date`;
+        const coreUrl = `http://localhost:8080/filter_files?${coreQuery}`;
+        const dateUrl = `http://localhost:8080/filter_files?${dateQuery}`;
 
-        // Convert queries to a URL query string
-        const queryString = queries.join("&")
-        const url = `http://localhost:8080/filter_files?${queryString}`
-
-        const response = await fetch(url, {
-          method: "GET",
-        })
-        console.log("FilterFile", response.text)
-
-        if (!response.ok) {
-          throw new Error(`HTTP error! Status: ${response.status}`)
+        const [coreResponse, dateResponse] = await Promise.all([
+          fetch(coreUrl, { method: "GET" }),
+          fetch(dateUrl, { method: "GET" })
+        ]);
+        
+        if (!coreResponse.ok || !dateResponse.ok) {
+          throw new Error("Failed to fetch data");
         }
 
-        const jsonData = await response.json()
-        console.log("Filtered Files:", jsonData)
+        const coreData = await coreResponse.json();
+        const dateData = await dateResponse.json();
 
-        // Save fetched data to state
-        setJsonData(jsonData)
+        console.log("Core Data:", coreData);
+        console.log("Date Data:", dateData);
+
+        setJsonData(coreData[0]);
+        setDateData(dateData);
       } catch (error) {
-        console.error("Error fetching filtered files:", error)
+        console.error("Error fetching data:", error);
       }
     }
-    async function fetchDateFile() {
-      try {
-        // Define query parameters
-        const queries = ["queries=id:" + id, "queries=type:date"]
-
-        // Convert queries to a URL query string
-        const queryString = queries.join("&")
-        const url = `http://localhost:8080/filter_files?${queryString}`
-
-        const response = await fetch(url, {
-          method: "GET",
-        })
-
-        console.log("DataFile: ", response)
-
-        if (!response.ok) {
-          throw new Error(`HTTP error! Status: ${response.status}`)
-        }
-
-        const dateData = await response.json()
-        console.log("Filtered Files:", dateData)
-
-        // Save fetched data to state
-        setDateData(dateData)
-      } catch (error) {
-        console.error("Error fetching filtered files:", error)
-      }
-    }
-
-    fetchFilteredFiles()
-    fetchDateFile()
-  }, [])
-
+    fetchData();
+  }, [id]);
+  
   return (
     <div className="flex min-h-screen bg-gradient-to-br from-teal-100 via-white to-teal-100 text-gray-900">
       <Sidebar />
@@ -212,42 +180,32 @@ export default function Page() {
         >
           <Card className="bg-white/70 backdrop-blur-md border border-white/20 shadow-lg">
             <CardContent className="p-6">
-              {jsonData ? (
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-4">
-                    <Avatar className="h-16 w-16">
-                      <AvatarImage
-                        src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-P2vICEJIg813fYnqzfSBLL7xaRLH5t.png"
-                        alt="Patient"
-                      />
-                      <AvatarFallback>HB</AvatarFallback>
-                    </Avatar>
-                    <div>
-                      <h2 className="text-2xl font-semibold">Henk Boerman</h2>
-                      <p className="text-gray-500">boerman53@gmail.com</p>
-                    </div>
-                  </div>
-                  <div className="flex gap-2">
-                    <Button size="icon" variant="outline">
-                      <Phone className="h-5 w-5" />
-                    </Button>
-                    <Button size="icon" variant="outline">
-                      <Video className="h-5 w-5" />
-                    </Button>
-                    <Button size="icon" variant="outline">
-                      <MoreHorizontal className="h-5 w-5" />
-                    </Button>
-                  </div>
-                </div>
-              ) : (
+              <div className="flex items-center justify-between">
                 <div className="flex items-center gap-4">
-                  <Skeleton className="h-16 w-16 rounded-full" />
-                  <div className="space-y-2">
-                    <Skeleton className="h-4 w-[200px]" />
-                    <Skeleton className="h-4 w-[150px]" />
+                  <Avatar className="h-16 w-16">
+                    <AvatarImage
+                      src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-P2vICEJIg813fYnqzfSBLL7xaRLH5t.png"
+                      alt="Patient"
+                    />
+                    <AvatarFallback>HB</AvatarFallback>
+                  </Avatar>
+                  <div>
+                    <h2 className="text-2xl font-semibold">{jsonData?.name}</h2>
+                    <p className="text-gray-500"></p>
                   </div>
                 </div>
-              )}
+                <div className="flex gap-2">
+                  <Button size="icon" variant="outline">
+                    <Phone className="h-5 w-5" />
+                  </Button>
+                  <Button size="icon" variant="outline">
+                    <Video className="h-5 w-5" />
+                  </Button>
+                  <Button size="icon" variant="outline">
+                    <MoreHorizontal className="h-5 w-5" />
+                  </Button>
+                </div>
+              </div>
             </CardContent>
           </Card>
         </motion.div>
