@@ -10,6 +10,10 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart"
+import { useEffect, useState } from "react"
+import Papa from "papaparse"
+import { getNutrientRequirements } from "@/utils/nutrientRequirements"
+import { get } from "http"
 
 const chartData = [
   { month: "January", recommended: 186, current: 80 },
@@ -31,9 +35,21 @@ const chartConfig = {
   },
 } satisfies ChartConfig
 
+
+// 
+// 
+// 
+// DOES NOT PASS ACTUAL DATA
 export default function Component() {
+  const [data, setData] = useState<any[]>([]);
+  useEffect(() => {
+    const nutrients = getNutrientRequirements("Infants", 0.5)
+    console.log(nutrients)
+  }, []);
+
+  
   return (
-    <Card className="w-full max-w-lg">
+    <Card className="w-full max-w-lg border-none shadow-none">
       <CardHeader>
         <CardTitle>Nutrient Deficiencies</CardTitle>
         <CardDescription>January - June 2024</CardDescription>

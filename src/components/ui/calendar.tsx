@@ -5,7 +5,7 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import { DayPicker } from "react-day-picker";
 import { cn } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui/button";
-
+import { useEffect, useState } from "react";
 export type CalendarProps = React.ComponentProps<typeof DayPicker>;
 
 const restrictedDates = new Set([
@@ -20,6 +20,40 @@ function Calendar({
   showOutsideDays = true,
   ...props
 }: CalendarProps) {
+  const currentDate = new Date()
+  const [medicationLog, setMedicationLog] = useState({});
+  useEffect(() => {
+    const mockLog = {
+      "2024-02-01": true,  // Took meds ✅
+      "2024-02-02": false, // Missed meds ❌
+      "2024-02-03": true,
+      "2024-02-04": false,
+      "2024-02-05": true,
+    };
+    setMedicationLog(mockLog);
+  }, []);
+  const formatDate = (date: Date) => date.toISOString().split("T")[0];
+  const daysToCheck = []
+  for (let d = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1); d <= currentDate; d.setDate(d.getDate() + 1)) {
+    daysToCheck.push(new Date(d));
+  }
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       const response = await fetch("/SAMPLE");
+        
+  //     } catch (error) {
+        
+  //     }
+  //   };
+  //   fetchData();
+  // }, []);
+
+  const modifiersStyles = {
+    taken: { backgroundColor: "green", color: "white" },
+    missed: { backgroundColor: "red", color: "white" },
+  };
+  
   return (
     <DayPicker
       showOutsideDays={showOutsideDays}

@@ -169,7 +169,7 @@ export default function Page() {
 
               <Card className="bg-white/70 backdrop-blur-md border border-white/20 shadow-lg">
                 <CardHeader className="flex flex-row items-center justify-between">
-                  <CardContent className="w-full flex flex-col items-center justify-center">
+                  <CardContent className="w-full flex flex-col items-center justify-center border-none shadow-none">
                     <NutrientChart />
                   </CardContent>  
                 </CardHeader>
@@ -178,14 +178,15 @@ export default function Page() {
           </div>
 
           <div className="col-span-4 space-y-6">
-            <Card className="bg-white/70 backdrop-blur-md border border-white/20 shadow-lg flex flex-col align-items-center">
-              <CardHeader className="flex items-center justify-center">
+          <Card className="bg-white/70 backdrop-blur-md border border-white/20 shadow-lg flex flex-col items-center">
+            <CardHeader className="flex items-center justify-center">
                 <CardTitle className="text-lg">Tests & Results</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-6 flex flex-col align-items-center">
-                <Calendar />
-              </CardContent>
+            </CardHeader>
+                <CardContent className="space-y-6 flex flex-col items-center justify-center">
+                    <Calendar />
+                </CardContent>
             </Card>
+
 
             <Card className="bg-white/70 backdrop-blur-md border border-white/20 shadow-lg">
               <CardHeader className="flex flex-row items-center justify-between">

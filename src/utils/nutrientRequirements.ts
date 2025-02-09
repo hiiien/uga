@@ -1,0 +1,51 @@
+import Papa from "papaparse";
+
+const csvData = `
+Life_Stage_Group,Category,Carbohydrate,Protein,Fat,Vitamin_A,Vitamin_C,Vitamin_D,Vitamin_E,Vitamin_K,Thiamin,Riboflavin,Niacin,Vitamin_B6,Folate,Vitamin_B12
+0-6mo,Infants,60,9.1,31,400,40,10,4,2,0.2,0.3,2,0.1,65,0.4
+6-12mo,Infants,95,11,30,500,50,10,5,2.5,0.3,0.4,4,0.3,80,0.5
+1-3y,Children,130,13,,300,15,15,6,30,0.5,0.5,6,0.5,150,0.9
+4-8y,Children,130,19,,400,25,15,7,55,0.6,0.6,8,0.6,200,1.2
+9-13y,Males,130,34,,600,45,15,11,60,0.9,0.9,12,1,300,1.8
+14-18y,Males,130,52,,900,75,15,15,75,1.2,1.3,16,1.3,400,2.4
+19-30y,Males,130,56,,900,90,15,15,120,1.2,1.3,16,1.3,400,2.4
+31-50y,Males,130,56,,900,90,15,15,120,1.2,1.3,16,1.3,400,2.4
+51-70y,Males,130,56,,900,90,15,15,120,1.2,1.3,16,1.7,400,2.4
+>70y,Males,130,56,,900,90,20,15,120,1.2,1.3,16,1.7,400,2.4
+9-13y,Females,130,34,,600,45,15,11,60,0.9,0.9,12,1,300,1.8
+14-18y,Females,130,46,,700,65,15,15,75,1,1,14,1.2,400,2.4
+19-30y,Females,130,46,,700,75,15,15,90,1.1,1.1,14,1.3,400,2.4
+31-50y,Females,130,46,,700,75,15,15,90,1.1,1.1,14,1.3,400,2.4
+51-70y,Females,130,46,,700,75,15,15,90,1.1,1.1,14,1.5,400,2.4
+>70y,Females,130,46,,700,75,20,15,90,1.1,1.1,14,1.5,400,2.4
+`;
+
+let nutrientData: any[] = [];
+
+Papa.parse(csvData, {
+  header: true,
+  skipEmptyLines: true,
+  complete: (result: Papa.ParseResult<any>) => {
+    nutrientData = result.data;
+  },
+});
+
+export function getNutrientRequirements(category: string, age: number) {
+  const lifeStage = getLifeStage(age);
+  return nutrientData.find(
+    (item) => item.Life_Stage_Group === lifeStage && item.Category === category
+  );
+}
+
+function getLifeStage(age: number): string {
+  if (age <= 0.5) return "0-6mo";
+  else if (age <= 1) return "6-12mo";
+  else if (age <= 3) return "1-3y";
+  else if (age <= 8) return "4-8y";
+  else if (age <= 13) return "9-13y";
+  else if (age <= 18) return "14-18y";
+  else if (age <= 30) return "19-30y";
+  else if (age <= 50) return "31-50y";
+  else if (age <= 70) return "51-70y";
+  return ">70y";
+}
