@@ -16,6 +16,8 @@ const NoSSRChart = dynamic(
   { ssr: false }
 )
 
+
+
 export default function Page() {
   const recommendedData = [
     { name: "Carbs", value: 50 },
@@ -30,11 +32,11 @@ export default function Page() {
     { name: "Protein", value: 25 },
   ]
   
-  const COLORS = {
-    Carbs: "hsl(0, 73.90%, 52.00%)",
-    Fats: "hsl(120, 55.43%, 42.92%)",
-    Protein: "hsl(var(--chart-3))",
-  }
+    const COLORS = {
+    Protein: "hsl(0, 77%, 84%)",
+    Carbs: "hsl(170.57, 76.92%, 64.31%)",
+    Fat: "hsl(var(--chart-3))",
+  };
   
   // Move state hook and fetch outside the JSX below
   const [records, setRecords] = useState<any[]>([]);
